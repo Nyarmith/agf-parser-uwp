@@ -1,0 +1,35 @@
+﻿<Page
+    x:Class="agf_parser_uwp.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:agf_parser_uwp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <!--each of these things should have handlers like "SelectionChanged_thing"-->
+
+        <ListView HorizontalAlignment="Left"
+                  VerticalAlignment="Top" Margin="25,25,0,0">
+            <ComboBox x:Name="FontSize"
+                      Header="Font-Size"
+                  HorizontalAlignment="Left">
+                <ComboBoxItem Content="Small" />
+                <ComboBoxItem Content="Medium" IsSelected="True"/>
+                <ComboBoxItem Content="Large" />
+            </ComboBox>
+
+            <ToggleSwitch x:Name="VaToggle"
+                      Header="Voice Acting"
+                      HorizontalAlignment="Left"
+                      Height="60"
+                      Width="154"/>
+
+            <!-- launch URI for my site, more info for this here: https://docs.microsoft.com/en-us/windows/uwp/launch-resume/launch-default-app -->
+            <TextBlock Text="Written By Sergey Ivanov" />
+        </ListView>
+
+    </RelativePanel>
+</Page>

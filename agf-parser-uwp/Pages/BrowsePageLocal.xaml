@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="agf_parser_uwp.OptionsMenu"
+    x:Class="agf_parser_uwp.BrowsePageLocal"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:agf_parser_uwp"
@@ -7,7 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <!--https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-reading-and-writing-files-->
+    
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        
     </Grid>
 </Page>

@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="agf_parser_uwp.AboutMenu"
+    x:Class="agf_parser_uwp.ResumePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:agf_parser_uwp"

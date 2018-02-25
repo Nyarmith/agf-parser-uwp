@@ -5,12 +5,65 @@
     xmlns:local="using:agf_parser_uwp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" HorizontalAlignment="Left" VerticalAlignment="Top">
+    
+    <NavigationView
+        x:Name="MainNavView"
+        VerticalAlignment="Top"
+        HorizontalAlignment="Left"
+        Height="1000"
+        Width="1500"
+        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+        Loaded="Loaded"
+        ItemInvoked="ItemInvoked"
+        SelectionChanged="SelectionChanged">
+        <!-- CompactModeThresholdWidth="2000" CompactPaneLength="2000" 
+             Overriding Thresholds so the app never minimizes the menu -->
+        
+        <NavigationView.MenuItems>
+            <!-- <NavigationViewItemSeparator/> -->
+            <NavigationViewItem Icon="Play" Content="Start New Game" Tag="Play" />
+            <NavigationViewItem Icon="Refresh" Content="Resume Game" Tag="Resume" />
+            <NavigationViewItemSeparator/>
+            <NavigationViewItem Icon="OpenLocal" Content="Import Adventure File" Tag="Import" />
+            <NavigationViewItem Icon="Globe" Content="Browse Online Adventures" Tag="BrowseNet" />
+            <NavigationViewItem Icon="BrowsePhotos" Content="Browse Local Adventures" Tag="BrowseLocal" />
+            <NavigationViewItemSeparator/>
+            <NavigationViewItem Icon="Edit" Content="Adventure Creator" Tag="Creator" />
+        </NavigationView.MenuItems>
 
-    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <NavigationView.HeaderTemplate>
+            <DataTemplate>
+                <Grid Margin="24,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                           FontSize="28"
+                           VerticalAlignment="Center"
+                           Text="Placeholder!"/> <!--TODO: Replace this with a x:Bind-->
+                    <CommandBar Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            DefaultLabelPosition="Right"
+                            Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                        <!--<AppBarButton Label="Refresh" Icon="Refresh"/>-->
+                        <!--<AppBarButton Label="Import" Icon="Import"/>-->
+                    </CommandBar>
+                </Grid>
+            </DataTemplate>
+        </NavigationView.HeaderTemplate>
 
-        </NavigationView>
+        <Frame x:Name="ContentFrame" Margin="24">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <NavigationThemeTransition/>
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+        </Frame>
+
+    </NavigationView>
 
 
-    </RelativePanel>
 </Page>

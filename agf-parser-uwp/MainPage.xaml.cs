@@ -26,5 +26,80 @@ namespace agf_parser_uwp
         {
             this.InitializeComponent();
         }
+
+        private void Loaded(object sender, RoutedEventArgs e)
+        {
+
+            // set the initial SelectedItem 
+            foreach (NavigationViewItemBase item in MainNavView.MenuItems)
+            {
+                if (item is NavigationViewItem && item.Tag.ToString() == "apps")
+                {
+                    MainNavView.SelectedItem = item;
+                    break;
+                }
+            }
+        }
+
+        private void ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+
+            if (args.IsSettingsInvoked)
+            {
+                ContentFrame.Navigate(typeof(SettingsPage));
+            }
+            else
+            {
+                // find NavigationViewItem with Content that equals InvokedItem
+                var item = sender.MenuItems.OfType<NavigationViewItem>().First(x => (string)x.Content == (string)args.InvokedItem);
+                Navigate(item as NavigationViewItem);
+
+            }
+        }
+
+        private void SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            if (args.IsSettingsSelected)
+            {
+                ContentFrame.Navigate(typeof(SettingsPage));
+            }
+            else
+            {
+                NavigationViewItem item = args.SelectedItem as NavigationViewItem;
+                Navigate(item);
+            }
+        }
+
+        private void Navigate(NavigationViewItem item)
+        {
+            switch (item.Tag)
+            {
+                case "Play":
+                    ContentFrame.Navigate(typeof(PlayList));
+                    break;
+
+                case "Resume":
+                    //List Games In Progress
+                    ContentFrame.Navigate(typeof(ResumePage));
+                    break;
+
+                case "Import":
+                    ContentFrame.Navigate(typeof(ImportPage));
+                    break;
+
+                case "BrowseNet":
+                    ContentFrame.Navigate(typeof(BrowsePageNet));
+                    break;
+
+                case "BrowseLocal":
+                    ContentFrame.Navigate(typeof(BrowsePageLocal));
+                    break;
+
+                case "Creator":
+                    ContentFrame.Navigate(typeof(Creator));
+                    break;
+            }
+        }
+
     }
 }
