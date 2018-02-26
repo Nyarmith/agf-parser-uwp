@@ -8,8 +8,35 @@
     mc:Ignorable="d">
 
     <!--https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-reading-and-writing-files-->
-    
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        
-    </Grid>
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock x:Name="TitleTextBlock"
+                   Text="Collection"
+                   Style="{StaticResource TitleTextBlockStyle}"
+                   Margin="24,0,0,24" />
+
+        <CommandBar x:Name="MainCommandBar"
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                    RelativePanel.AlignRightWithPanel="True"
+                    OverflowButtonVisibility="Collapsed"
+                    DefaultLabelPosition="Right" d:IsHidden="True">
+        </CommandBar>
+
+        <GridView x:Name="ImageGridView"
+                  ItemsSource="source_placeholder"
+                  Margin="0,0,0,8"
+                  IsItemClickEnabled="True"
+                  RelativePanel.AlignLeftWithPanel="True"
+                  RelativePanel.AlignRightWithPanel="True"
+                  RelativePanel.Below="TitleTextBlock">
+
+            <!--Loaded="{x:Bind StartConnectedAnimationForBackNavigation}"
+                  ItemsPanel="{StaticResource ImageGridView_ItemsPanelTemplate}"
+                  ItemTemplate="{StaticResource ImageGridView_DefaultItemTemplate}"
+                  ItemContainerStyle="{StaticResource ImageGridView_DefaultItemContainerStyle}">
+                  ItemClick="ImageGridView_ItemClick"
+                 >-->
+        </GridView>
+
+    </RelativePanel>
 </Page>

@@ -97,6 +97,8 @@ namespace agf_parser_uwp
 
                 case "Creator":
                     ContentFrame.Navigate(typeof(Creator));
+                    //consider using base.OnNavigatedTo here
+                    ContentFrame.Navigate(typeof(Creator));
                     break;
             }
         }

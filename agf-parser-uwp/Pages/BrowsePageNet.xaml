@@ -9,6 +9,8 @@
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
+    
+    <!-- TODO: Add templates here-->
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock x:Name="TitleTextBlock"
