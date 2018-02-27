@@ -7,7 +7,36 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <!-- TODO: Add templates here-->
 
-    </Grid>
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock x:Name="TitleTextBlock"
+                   Text="Collection"
+                   Style="{StaticResource TitleTextBlockStyle}"
+                   Margin="24,0,0,24" />
+
+        <CommandBar x:Name="MainCommandBar"
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                    RelativePanel.AlignRightWithPanel="True"
+                    OverflowButtonVisibility="Collapsed"
+                    DefaultLabelPosition="Right" d:IsHidden="True">
+        </CommandBar>
+
+        <GridView x:Name="ImageGridView"
+                  ItemsSource="In Progress Games"
+                  Margin="0,0,0,8"
+                  IsItemClickEnabled="True"
+                  RelativePanel.AlignLeftWithPanel="True"
+                  RelativePanel.AlignRightWithPanel="True"
+                  RelativePanel.Below="TitleTextBlock">
+
+            <!--Loaded="{x:Bind StartConnectedAnimationForBackNavigation}"
+                  ItemsPanel="{StaticResource ImageGridView_ItemsPanelTemplate}"
+                  ItemTemplate="{StaticResource ImageGridView_DefaultItemTemplate}"
+                  ItemContainerStyle="{StaticResource ImageGridView_DefaultItemContainerStyle}">
+                  ItemClick="ImageGridView_ItemClick"
+                 >-->
+        </GridView>
+
+    </RelativePanel>
 </Page>

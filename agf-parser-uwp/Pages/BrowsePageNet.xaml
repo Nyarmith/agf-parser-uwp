@@ -26,7 +26,7 @@
         </CommandBar>
 
         <GridView x:Name="ImageGridView"
-                  ItemsSource="source_placeholder"
+                  ItemsSource="Bottom Half Of Screen"
                   Margin="0,0,0,8"
                   IsItemClickEnabled="True"
                   RelativePanel.AlignLeftWithPanel="True"
