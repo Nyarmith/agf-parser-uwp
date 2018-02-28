@@ -11,7 +11,7 @@
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock x:Name="TitleTextBlock"
-                   Text="Collection"
+                   Text="In-Progress Games"
                    Style="{StaticResource TitleTextBlockStyle}"
                    Margin="24,0,0,24" />
 
