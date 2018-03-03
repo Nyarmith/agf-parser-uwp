@@ -9,19 +9,20 @@ namespace agf_parser_uwp.Parser
 {
     public class State
     {
-        string text;
-        string[][] options;
+        public string text;
+        public string[][] transitions;
     }
 
 	public class AdventureGame
 	{
-        string title;
-        string author;
-        Dictionary<string, State> gamevars;
-        string[] win_states;
-        string start_state;
-        //make new obj type for satates
-        Dictionary<string, Dictionary<string, string>> states;
+        public string title;
+        public string author;
+        public Dictionary<string, State> gamevars;
+        public string[] win_states;
+        public string start_state;
+        //make new obj type for states
+        public Dictionary<string, State> states;
+        //make new obj for transitions
 
 
 
@@ -30,6 +31,7 @@ namespace agf_parser_uwp.Parser
             //idk do something?
         }
 
+        //these should be able to just load the guy from json
         public static AdventureGame loadObject(string json_str)
         {
             var stream = new MemoryStream();
