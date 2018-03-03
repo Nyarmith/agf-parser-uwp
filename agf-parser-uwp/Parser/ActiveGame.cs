@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace agf_parser_uwp.Parser
 {
@@ -13,7 +14,7 @@ namespace agf_parser_uwp.Parser
         private string position;    //ptr to current state
         private Tuple<int, string>[] choices;  //[transition_id, transition_text], options for player after pruning
         private string text;        //current text after processing
-
+        private Dictionary<string, Dictionary<string, int>> states;  //stuff like inventory::sword=true is here
 
         //==== Interface ====
 
@@ -80,6 +81,10 @@ namespace agf_parser_uwp.Parser
         private void processText(State newState)
         {
             //process text based on env states
+            XmlDocument xml = new XmlDocument();
+            xml.LoadXml("<base>xml string</base>");
+            //consider also: XmlReader
+            //fuck I have no idea how to use the c# xml parser
         }
     }
 }
