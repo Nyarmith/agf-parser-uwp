@@ -68,11 +68,27 @@ namespace agf_parser_uwp.Parser
 
         //==== Helpers ====
 
+
+        //TODO: Actually parse these correctly with tokenizing and explicit production rules
         //execute setter in transition statement
+
         private void execStmt(string stmt)
         {
-            
+            string[] stmts = stmt.Split(";");
+
+            foreach (string s in stmts)
+            {
+                //process things based on string s
+            }
         }
+
+        private int evalStmt(string stmt)
+        {
+            //split based off parentheses
+
+            return 1;
+        }
+
         private void pruneChoices(State newState)
         {
             //prune the choices the user can pick
@@ -85,6 +101,31 @@ namespace agf_parser_uwp.Parser
             xml.LoadXml("<base>xml string</base>");
             //consider also: XmlReader
             //fuck I have no idea how to use the c# xml parser
+        }
+
+        //if in this method, assume the condition is true
+        private string parseXML(XmlNode node)
+        {
+            string ret = "";
+
+            foreach (XmlNode e in node.ChildNodes)
+            {
+                switch (e.Name)  //which xml tag are we?
+                {
+                    case "#text":
+                        ret += e.InnerText;
+                        break;
+                    case "cond":
+                        XmlAttributeCollection col = e.Attributes;
+                        XmlAttribute a =(XmlAttribute)col.GetNamedItem("expr");
+                        if (evalStmt(a.Value) != 0)
+                            ret += parseXML(e);
+                        break;
+                    default:
+                        throw new Exception("Unrecognized xml tag encountered while parsing: " + e.Name);
+                }
+            }
+            return ret;
         }
     }
 }
