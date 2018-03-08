@@ -128,4 +128,99 @@ namespace agf_parser_uwp.Parser
             return ret;
         }
     }
+
+    class AdvLangLexer
+    {
+        private string word;
+
+        AdvLangLexer(string text)
+        {
+
+        }
+
+    }
+
+    class AdvLangParser
+    {
+        //reference to game object and its memory
+        private ActiveGame game;
+        private AdvLangLexer lexer;
+
+        //language things
+        private List<string> stack;
+        private Dictionary<String, Action> dictionary;
+        //do this : https://stackoverflow.com/questions/22599425/how-to-map-strings-to-methods-with-a-dictionary
+
+        AdvLangParser(ref ActiveGame ag)
+        {
+            game = ag;
+        }
+
+        /*==list of operations==*/
+        // =, +=, -=, ++, --, >, <, >=, <=, ==, !=
+        void assign()
+        {
+
+        }
+
+        void plusassign()
+        {
+
+        }
+
+        void minusassign()
+        {
+
+        }
+
+        void increment()
+        {
+
+        }
+
+        void decrement()
+        {
+
+        }
+
+        void leq()
+        {
+
+        }
+
+        void geq()
+        {
+
+        }
+
+        void lt()
+        {
+
+        }
+
+        void gt()
+        {
+
+        }
+
+        void isequal()
+        {
+
+        }
+
+        void isnotequal()
+        {
+
+        }
+
+
+        /** Parse string and return value
+         * @text Statement in AdvLang to interpret
+         */
+        int exec(string text)
+        {
+            lexer = AdvLangLexer(text);
+            //get next word, map to dictionary or something
+        }
+    }
 }
