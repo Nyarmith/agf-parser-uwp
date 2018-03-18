@@ -4,23 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using AgfLang;
 
 namespace agf_parser_uwp.Parser
 {
     //essentially the AdventureGame class from the python version
-    class ActiveGame
+    public class ActiveGame
     {
-        private AdventureGame data; //adventure game data structure
-        private string position;    //ptr to current state
-        private Tuple<int, string>[] choices;  //[transition_id, transition_text], options for player after pruning
-        private string text;        //current text after processing
-        private Dictionary<string, Dictionary<string, int>> states;  //stuff like inventory::sword=true is here
+        private AdventureGame data;
+        private string position;
+        private List<Tuple<int, string>> choices = new List<Tuple<int, string>>();   //[transition_id, transition_text], options after pruning
+        private string text;  //after processing
+        private Dictionary<string, Dictionary<string, int>> states = new Dictionary<string, Dictionary<string, int>>();
+        private AgfLang.AgfInterpreter interp;
+
+        public ActiveGame(AdventureGame adventure_)
+        {
+            data = adventure_;
+            interp = new AgfInterpreter(ref states);
+        }
 
         //==== Interface ====
-
         public void start()
         {
             //set initial position and process text based on state
+            position = data.start_state;
+            //load relevant gamevars
+            State cur = data.states[position];
+            pruneChoices(cur);
+            processText(cur);
         }
 
         public string[] getChoices()
@@ -68,39 +80,40 @@ namespace agf_parser_uwp.Parser
 
         //==== Helpers ====
 
-
         //TODO: Actually parse these correctly with tokenizing and explicit production rules
         //execute setter in transition statement
 
         private void execStmt(string stmt)
         {
-            string[] stmts = stmt.Split(";");
-
-            foreach (string s in stmts)
-            {
-                //process things based on string s
-            }
+            interp.exec(stmt);
         }
 
         private int evalStmt(string stmt)
         {
-            //split based off parentheses
-
-            return 1;
+            return Convert.ToInt32(interp.eval(stmt));
         }
 
         private void pruneChoices(State newState)
         {
-            //prune the choices the user can pick
+            string[][] ch = newState.transitions;
+            choices = new List<Tuple<int, string>>();
+            for (int i=0; i<ch.Length; ++i)
+            {
+                string[] c = ch[i];
+                if (c[0] == "" || evalStmt(c[0]) != 0)
+                {
+                    choices.Add( new Tuple<int, string>(i, c.Last()) );
+                }
+            }
         }
 
         private void processText(State newState)
         {
             //process text based on env states
             XmlDocument xml = new XmlDocument();
-            xml.LoadXml("<base>xml string</base>");
-            //consider also: XmlReader
-            //fuck I have no idea how to use the c# xml parser
+            xml.LoadXml("<base>"+newState.text+"</base>");
+            //parseXML(xml.GetElementsByTagName("base")[0]);
+            parseXML(xml.DocumentElement);
         }
 
         //if in this method, assume the condition is true
@@ -126,101 +139,6 @@ namespace agf_parser_uwp.Parser
                 }
             }
             return ret;
-        }
-    }
-
-    class AdvLangLexer
-    {
-        private string word;
-
-        AdvLangLexer(string text)
-        {
-
-        }
-
-    }
-
-    class AdvLangParser
-    {
-        //reference to game object and its memory
-        private ActiveGame game;
-        private AdvLangLexer lexer;
-
-        //language things
-        private List<string> stack;
-        private Dictionary<String, Action> dictionary;
-        //do this : https://stackoverflow.com/questions/22599425/how-to-map-strings-to-methods-with-a-dictionary
-
-        AdvLangParser(ref ActiveGame ag)
-        {
-            game = ag;
-        }
-
-        /*==list of operations==*/
-        // =, +=, -=, ++, --, >, <, >=, <=, ==, !=
-        void assign()
-        {
-
-        }
-
-        void plusassign()
-        {
-
-        }
-
-        void minusassign()
-        {
-
-        }
-
-        void increment()
-        {
-
-        }
-
-        void decrement()
-        {
-
-        }
-
-        void leq()
-        {
-
-        }
-
-        void geq()
-        {
-
-        }
-
-        void lt()
-        {
-
-        }
-
-        void gt()
-        {
-
-        }
-
-        void isequal()
-        {
-
-        }
-
-        void isnotequal()
-        {
-
-        }
-
-
-        /** Parse string and return value
-         * @text Statement in AdvLang to interpret
-         */
-        int exec(string text)
-        {
-            lexer = AdvLangLexer(text);
-            //get next word, map to dictionary or something
         }
     }
 }

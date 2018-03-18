@@ -17,18 +17,31 @@ namespace agf_parser_uwp.Parser
 	{
         public string title;
         public string author;
-        public Dictionary<string, State> gamevars;
+        public Dictionary<string, Dictionary<string,int>> gamevars;
         public string[] win_states;
         public string start_state;
-        //make new obj type for states
         public Dictionary<string, State> states;
-        //make new obj for transitions
 
+        public static AdventureGame loadFromFile(string path)
+        {
+            if (!File.Exists(path))
+            {
+                throw new Exception("Error, no file found at path: " + path);
+            }
+            string contents = "";
+            contents = File.ReadAllText(path);
 
+            return loadObject(contents);
+        }
 
-		public AdventureGame ()
-		{
-            //idk do something?
+        public static AdventureGame saveToFile(AdventureGame game, string path)
+        {
+            if (!File.Exists(path))
+            {
+                string contents = saveObject(game);
+                File.WriteAllText(path, contents);
+            }
+            throw new Exception("File already exists: " + path);
         }
 
         //these should be able to just load the guy from json
