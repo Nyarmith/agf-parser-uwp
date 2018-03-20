@@ -5,15 +5,24 @@ namespace CLI_parser
 {
     class Program
     {
-        string prompt(string text = "")
+        static string prompt(string text = "")
         {
             Console.Write(text + "\n>");
             return Console.ReadLine();
         }
-        string fileDialogue()
+        static string fileDialogue()
         {
             //do a while loop, listing the .agf/.json files in the directory and returning its path when one is chosen
-
+            string advDir = System.IO.Directory.GetCurrentDirectory() + "/Adventures/";
+            string[] files = System.IO.Directory.GetFiles(advDir);
+            string res = prompt("Enter Adventure # (starting from 1):\n" + String.Join("\n",files));
+            int.TryParse(res, out int choice);
+            while (choice < 1 && choice > files.Length)
+            {
+                res = prompt("Invalid File, Enter Valid Adventure # (starting from 1):\n" + String.Join("\n",files));
+                int.TryParse(res, out choice);
+            }
+            return files[choice-1];
         }
         static void Main(string[] args)
         {

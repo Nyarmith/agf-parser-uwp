@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\agf-parser-uwp\agf-parser-uwp.csproj" />
+    <Compile Include="..\agf-parser-uwp\Parser\ActiveGame.cs" Link="ActiveGame.cs" />
+    <Compile Include="..\agf-parser-uwp\Parser\AdventureGame.cs" Link="AdventureGame.cs" />
+    <Compile Include="..\agf-parser-uwp\Parser\AgfInterpreter.cs" Link="AgfInterpreter.cs" />
   </ItemGroup>
 
 </Project>

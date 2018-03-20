@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\agf-parser-uwp\Parser\ActiveGame.cs" Link="ActiveGame.cs" />
+    <Compile Include="..\agf-parser-uwp\Parser\AdventureGame.cs" Link="AdventureGame.cs" />
+    <Compile Include="..\agf-parser-uwp\Parser\AgfInterpreter.cs" Link="AgfInterpreter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
