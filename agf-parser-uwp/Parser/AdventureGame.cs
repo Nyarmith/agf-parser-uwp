@@ -62,8 +62,14 @@ namespace agf_parser_uwp.Parser
             var stream = new MemoryStream();
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(AdventureGame));
             ser.WriteObject(stream,adv_obj);
-
-            return stream.ToString();
+            var reader = new StreamReader(stream);
+            Console.WriteLine(Encoding.UTF8.GetString(stream.ToArray()));
+            /*
+             * 
+             * output looks like this so far: {"author":"sergey","gamevars":[],"start_state":"question","states":[],"title":"basic addition","win_states":["right_result"]}
+             * Ugh, next task is to define serialization correctly, which will require reading about it.
+             * /
+            return reader.ReadToEnd();
         }
     }
 }
