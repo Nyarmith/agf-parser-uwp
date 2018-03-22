@@ -2,7 +2,9 @@
 Universal Widnows App for playing adventure games defined in the .agf format.
 
 TODO:   
-- Outline major DS design of each page
+- Find out why serizalization isn't working
+- Get repl passing
+- Make unit tests pass
 - Setup scaling views
 - Setup correct view templates for each page
 
