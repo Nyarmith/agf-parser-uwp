@@ -5,18 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using AgfLang;
+using System.Web.Script.Serialization;
 
 namespace agf_parser_uwp.Parser
 {
     //essentially the AdventureGame class from the python version
+
     public class ActiveGame
     {
         private AdventureGame data;
         private string position;
         private List<Tuple<int, string>> choices = new List<Tuple<int, string>>();   //[transition_id, transition_text], options after pruning
-        private string text;  //after processing
         private Dictionary<string, Dictionary<string, int>> states = new Dictionary<string, Dictionary<string, int>>();
+
         private AgfLang.AgfInterpreter interp;
+        private string text;  //after processing
 
         public ActiveGame(AdventureGame adventure_)
         {
@@ -52,22 +55,22 @@ namespace agf_parser_uwp.Parser
 
         public bool isEnd()
         {
-            return (data.states[position].transitions.Length == 0);
+            return (data.states[position].transitions.Count == 0);
         }
 
         public bool isWin()
         {
-            return (Array.IndexOf(data.win_states, position) != -1);
+            return (data.win_states.IndexOf(position) != -1);
         }
 
         public void choose(int c)
         {
             //translate choice c to og transition
             c = choices[c].Item1;
-            string[] next_t = data.states[position].transitions[c];
+            List<string> next_t = data.states[position].transitions[c];
             //TODO: Implement random transition check&choice here
 
-            string pos = next_t[next_t.Length - 2];
+            string pos = next_t[next_t.Count - 2];
             State nextNode = data.states[pos];
 
             //==== main transition steps ====
@@ -95,11 +98,11 @@ namespace agf_parser_uwp.Parser
 
         private void pruneChoices(State newState)
         {
-            string[][] ch = newState.transitions;
+            List<List<string>> ch = newState.transitions;
             choices = new List<Tuple<int, string>>();
-            for (int i=0; i<ch.Length; ++i)
+            for (int i=0; i<ch.Count; ++i)
             {
-                string[] c = ch[i];
+                List<string> c = ch[i];
                 if (c[0] == "" || evalStmt(c[0]) != 0)
                 {
                     choices.Add( new Tuple<int, string>(i, c.Last()) );
@@ -113,7 +116,7 @@ namespace agf_parser_uwp.Parser
             XmlDocument xml = new XmlDocument();
             xml.LoadXml("<base>"+newState.text+"</base>");
             //parseXML(xml.GetElementsByTagName("base")[0]);
-            parseXML(xml.DocumentElement);
+            text = parseXML(xml.DocumentElement);
         }
 
         //if in this method, assume the condition is true

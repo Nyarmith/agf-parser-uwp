@@ -30,7 +30,7 @@ namespace CLI_parser
             {
                 string filename = fileDialogue();
                 AdventureGame adv = AdventureGame.loadFromFile(filename);
-                string test = AdventureGame.saveObject(adv);
+                string test = AdventureGame.saveToString(adv);
                 ActiveGame ag = new ActiveGame(adv);
                 while (!ag.isEnd())
                 {
