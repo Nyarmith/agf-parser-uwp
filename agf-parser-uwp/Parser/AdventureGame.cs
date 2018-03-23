@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace agf_parser_uwp.Parser
 {
@@ -49,18 +50,19 @@ namespace agf_parser_uwp.Parser
         //these should be able to just load the guy from json
         public static AdventureGame loadFromString(string json_str)
         {
-            var dynamicObj = new System.Web.Script.Serialization.JavaScriptSerializer();
-            var obj = dynamicObj.DeserializeObject(json_str);
+            return new AdventureGame();
         }
 
         public static string saveToString(AdventureGame adv_obj)
         {
+            JsonSerializer ser = new JsonSerializer();
+            ser.Serialize(adv_obj);
             /*
              * 
              * output looks like this so far: {"author":"sergey","gamevars":[],"start_state":"question","states":[],"title":"basic addition","win_states":["right_result"]}
              * Ugh, next task is to define serialization correctly, which will require reading about it.
              */
-            return ret;
+            return "";
         }
     }
 }
