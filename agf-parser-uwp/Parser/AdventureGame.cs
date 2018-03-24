@@ -50,13 +50,18 @@ namespace agf_parser_uwp.Parser
         //these should be able to just load the guy from json
         public static AdventureGame loadFromString(string json_str)
         {
+            dynamic ser = JsonConvert.DeserializeObject<dynamic>(json_str);
             return new AdventureGame();
         }
 
         public static string saveToString(AdventureGame adv_obj)
         {
-            JsonSerializer ser = new JsonSerializer();
-            ser.Serialize(adv_obj);
+            string samp_str = "some_valid_json_guy";
+            //construct a new object I guess
+            //next attempt: try automatic deserialization with jsonconvert and see what class is generated(i.e. generate a c# class from the json)
+            var ser = JsonConvert.DeserializeObject<dynamic>(samp_str);
+
+            JsonConvert.SerializeObject(ser);
             /*
              * 
              * output looks like this so far: {"author":"sergey","gamevars":[],"start_state":"question","states":[],"title":"basic addition","win_states":["right_result"]}
