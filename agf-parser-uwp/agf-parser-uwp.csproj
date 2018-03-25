@@ -104,6 +104,9 @@
     <Compile Include="Pages\Creator.xaml.cs">
       <DependentUpon>Creator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\GameView.xaml.cs">
+      <DependentUpon>GameView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ImportPage.xaml.cs">
       <DependentUpon>ImportPage.xaml</DependentUpon>
     </Compile>
@@ -123,6 +126,8 @@
     <Compile Include="Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Util\GameFile.cs" />
+    <Compile Include="Util\NetworkGames.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -155,6 +160,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Creator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\GameView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

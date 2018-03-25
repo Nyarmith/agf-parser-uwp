@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using AgfLang;
-using System.Web.Script.Serialization;
 
 namespace agf_parser_uwp.Parser
 {
@@ -25,25 +24,40 @@ namespace agf_parser_uwp.Parser
         {
             data = adventure_;
             interp = new AgfInterpreter(ref states);
+            start();
         }
 
-        //==== Interface ====
-        public void start()
+        private void start()
         {
             //set initial position and process text based on state
             position = data.start_state;
+            //load gamevars
+            foreach (string key1 in data.gamevars.Keys)
+            {
+                foreach (string key2 in data.gamevars[key1].Keys)
+                {
+                    if (!states.ContainsKey(key1))
+                        states[key1] = new Dictionary<string, int>();
+                    object st8 = data.gamevars[key1][key2];
+                    if (st8 is bool)
+                        states[key1][key2] = (bool)st8 == true ? 1 : 0;
+                    else if (st8 is int)
+                        states[key1][key2] = (int)st8;
+                }
+            }
             //load relevant gamevars
             State cur = data.states[position];
             pruneChoices(cur);
             processText(cur);
         }
 
-        public string[] getChoices()
+        //==== Interface ====
+        public List<string> getChoices()
         {
-            string[] ret = null;   //is this valid?
+            List<string> ret = new List<string>();   //is this valid?
             foreach (Tuple<int,string> e in choices)
             {
-                ret.Append(e.Item2);
+                ret.Add(e.Item2);
             }
             return ret;
         }
@@ -55,7 +69,7 @@ namespace agf_parser_uwp.Parser
 
         public bool isEnd()
         {
-            return (data.states[position].transitions.Count == 0);
+            return (data.states[position].options.Count == 0);
         }
 
         public bool isWin()
@@ -67,7 +81,7 @@ namespace agf_parser_uwp.Parser
         {
             //translate choice c to og transition
             c = choices[c].Item1;
-            List<string> next_t = data.states[position].transitions[c];
+            List<string> next_t = data.states[position].options[c];
             //TODO: Implement random transition check&choice here
 
             string pos = next_t[next_t.Count - 2];
@@ -88,17 +102,21 @@ namespace agf_parser_uwp.Parser
 
         private void execStmt(string stmt)
         {
-            interp.exec(stmt);
+            if (stmt != "")
+                interp.exec(stmt);
         }
 
         private int evalStmt(string stmt)
         {
-            return Convert.ToInt32(interp.eval(stmt));
+            if (stmt != "")
+                return Convert.ToInt32(interp.eval(stmt));
+            else
+                return 1;
         }
 
         private void pruneChoices(State newState)
         {
-            List<List<string>> ch = newState.transitions;
+            List<List<string>> ch = newState.options;
             choices = new List<Tuple<int, string>>();
             for (int i=0; i<ch.Count; ++i)
             {

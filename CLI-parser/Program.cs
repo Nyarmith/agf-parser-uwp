@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using agf_parser_uwp.Parser;
 
 namespace CLI_parser
@@ -10,6 +11,7 @@ namespace CLI_parser
             Console.Write(text + "\n>");
             return Console.ReadLine();
         }
+
         static string fileDialogue()
         {
             //do a while loop, listing the .agf/.json files in the directory and returning its path when one is chosen
@@ -17,13 +19,14 @@ namespace CLI_parser
             string[] files = System.IO.Directory.GetFiles(advDir);
             string res = prompt("Enter Adventure # (starting from 1):\n" + String.Join("\n",files));
             int.TryParse(res, out int choice);
-            while (choice < 1 && choice > files.Length)
+            while (choice < 1 || choice > files.Length)
             {
-                res = prompt("Invalid File, Enter Valid Adventure # (starting from 1):\n" + String.Join("\n",files));
+                res = prompt("Invalid File Number, Enter Valid Adventure # (starting from 1):\n" + String.Join("\n",files));
                 int.TryParse(res, out choice);
             }
             return files[choice-1];
         }
+
         static void Main(string[] args)
         {
             while (true)
@@ -36,15 +39,17 @@ namespace CLI_parser
                 {
                     Console.WriteLine(ag.getText());
                     Console.WriteLine("--------");
-                    string[] options = ag.getChoices();
+                    List<string> options = ag.getChoices();
+                    int optnum = 1;
                     foreach (string opt in options)
                     {
-                        Console.WriteLine(opt);
+                        Console.WriteLine(Convert.ToString(optnum) + ") " + opt);
+                        optnum++;
                     }
                     int res = -1;
-                    while (res<1 && res>options.Length)
+                    while (res<1 || res>options.Count)
                     {
-                        string resp = prompt(String.Format("Choose an option [1-{0}]", options.Length));
+                        string resp = prompt(String.Format("Choose an option [1-{0}]", options.Count));
                         int.TryParse(resp, out res);
                     }
                     ag.choose(res - 1);

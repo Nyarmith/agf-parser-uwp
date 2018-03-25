@@ -170,7 +170,14 @@ namespace AgfLang
             }
             //we've reached the first ':'
             if (current_char != ':' || peek() != ':')
+            {
+                //check if it's a reserved keyword
+                if (fst == "true" || fst == "True")
+                {
+                    return new Token(Tokens.INT, "1");
+                }
                 error();
+            }
             advance();
             advance();
             string snd = "";

@@ -10,17 +10,17 @@ namespace agf_parser_uwp.Parser
     public class State
     {
         public string text;
-        public List<List<string>> transitions = new List<List<string>>();
+        public List<List<string>> options = new List<List<string>>();
 
         public State() { }
         public State(string text, List<List<string>> transitions) { }
     }
 
-	public class AdventureGame
-	{
+    public class AdventureGame
+    {
         public string title;
         public string author;
-        public Dictionary<string, Dictionary<string,int>> gamevars = new Dictionary<string, Dictionary<string, int>>();
+        public Dictionary<string, Dictionary<string, object>> gamevars = new Dictionary<string, Dictionary<string, object>>();
         public List<string> win_states = new List<string>();
         public string start_state;
         public Dictionary<string, State> states = new Dictionary<string, State>();
@@ -47,27 +47,51 @@ namespace agf_parser_uwp.Parser
             throw new Exception("File already exists: " + path);
         }
 
-        //these should be able to just load the guy from json
         public static AdventureGame loadFromString(string json_str)
         {
-            dynamic ser = JsonConvert.DeserializeObject<dynamic>(json_str);
-            return new AdventureGame();
+            AdventureGame ag = JsonConvert.DeserializeObject<AdventureGame>(json_str);
+            return ag;
         }
 
         public static string saveToString(AdventureGame adv_obj)
         {
-            string samp_str = "some_valid_json_guy";
-            //construct a new object I guess
-            //next attempt: try automatic deserialization with jsonconvert and see what class is generated(i.e. generate a c# class from the json)
-            var ser = JsonConvert.DeserializeObject<dynamic>(samp_str);
-
-            JsonConvert.SerializeObject(ser);
-            /*
-             * 
-             * output looks like this so far: {"author":"sergey","gamevars":[],"start_state":"question","states":[],"title":"basic addition","win_states":["right_result"]}
-             * Ugh, next task is to define serialization correctly, which will require reading about it.
-             */
-            return "";
+            string ser = JsonConvert.SerializeObject(adv_obj);
+            return ser;  //let's assume this works for now then fix it later
         }
     }
 }
+
+/* ==== Stuff Like This Works ====
+ * 
+            dynamic ser = JsonConvert.DeserializeObject<dynamic>(json_str);
+            Dictionary<string, Dictionary<string, dynamic>> res = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, dynamic>>>("{ \"inventory\":{ \"baseball\":true, \"bat\":true}, \"user\":{ } }");
+            foreach (string key1 in res.Keys)
+            {
+                foreach(string key2 in res[key1].Keys)
+                {
+                    if (!ag.gamevars.ContainsKey(key1))
+                        ag.gamevars[key1] = new Dictionary<string, int>();
+                    dynamic obstate = res[key1][key2];
+                    if (obstate is bool)
+                        ag.gamevars[key1][key2] = (bool)obstate == true ? 1 : 0;
+                    else if (obstate is int)
+                        ag.gamevars[key1][key2] = (int)obstate;
+                    else
+                        throw new Exception("Invalid gamevar type for variable " + key1 + "::" + key2);
+                }
+            }
+ *
+ */
+
+    /*
+     * 
+     * 
+            string xstns = @"{ ""text"":""do you know what 2+2 is?"", ""options"":[
+       ["","",""right_result"",""Yes, 4""],
+     ["""","""",""wrong_result"",""Yes, 3""],
+      ["""",""user::error=True"",""answer"",""No Just Tell Me""] ] }";
+
+            State res = JsonConvert.DeserializeObject<State>(xstns);
+            *
+            * another test
+            */

@@ -15,13 +15,16 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace agf_parser_uwp
+namespace agf_parser_uwp.Pages
 {
-    public sealed partial class PlayList : Page
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class GameView : Page
     {
-        public PlayList()
+        public GameView()
         {
-            this.InitializeComponent();
+            //this.InitializeComponent();
         }
     }
 }

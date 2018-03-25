@@ -5,19 +5,15 @@
     xmlns:local="using:agf_parser_uwp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" HorizontalAlignment="Left" VerticalAlignment="Top">
-    
-    
+    mc:Ignorable="d">
+
+
     <NavigationView
         x:Name="MainNavView"
-        VerticalAlignment="Top"
-        HorizontalAlignment="Left"
-        Height="1000"
-        Width="1500"
         Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
         Loaded="Loaded"
         ItemInvoked="ItemInvoked"
-        SelectionChanged="SelectionChanged">
+        SelectionChanged="SelectionChanged" Visibility="Visible" CompactModeThresholdWidth="631" FontFamily="Segoe UI">
         <!-- CompactModeThresholdWidth="2000" CompactPaneLength="2000" 
              Overriding Thresholds so the app never minimizes the menu -->
         

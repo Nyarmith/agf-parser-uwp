@@ -43,13 +43,11 @@ namespace agf_parser_unit_tests
             List<List<string>> transition_test_thing = new List<List<string>>();
             transition_test_thing.Add(new List<string>{ "pls", "work", "another", "time"});
             ag.states.Add("test_insert_state",new State("flavor texto", transition_test_thing));
-            ag.gamevars["ayy"] = new System.Collections.Generic.Dictionary<string, int>();
+            ag.gamevars["ayy"] = new System.Collections.Generic.Dictionary<string, object>();
             ag.gamevars["ayy"]["lmao"] = 23;
             string outStr = AdventureGame.saveToString(ag);
-            //do some comparison idk
             System.Console.WriteLine(outStr);
-            Assert.AreEqual(outStr, outStr);
+            Assert.AreNotEqual(outStr, ""); //very good test
         }
-        //also test responses against "basic addition" adventure
     }
 }
