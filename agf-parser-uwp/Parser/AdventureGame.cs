@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using Newtonsoft.Json;
 
-namespace agf_parser_uwp.Parser
+namespace agf_parser_uwp
 {
     public class State
     {

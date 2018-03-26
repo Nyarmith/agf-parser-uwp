@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using AgfLang;
+using agf_parser_uwp;
 
-namespace agf_parser_uwp.Parser
+namespace agf_parser_uwp
 {
     //essentially the AdventureGame class from the python version
 

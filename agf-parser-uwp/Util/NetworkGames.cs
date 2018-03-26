@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace agf_parser_uwp.Util
+namespace agf_parser_uwp
 {
     class NetworkGames
     {
