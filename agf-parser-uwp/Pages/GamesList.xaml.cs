@@ -48,7 +48,7 @@ namespace agf_parser_uwp
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<GameInfo> Images { get; } = new ObservableCollection<GameInfo>();
+        public ObservableCollection<GameInfo> Games { get; } = new ObservableCollection<GameInfo>();
 
         public GamesList()
         {
@@ -64,7 +64,7 @@ namespace agf_parser_uwp
             // Replaced with XAML binding
             // ImageGridView.ItemsSource = Images;
 
-            if (Images.Count == 0)
+            if (Games.Count == 0)
             {
                 await GetItemsAsync();
             }
@@ -104,7 +104,7 @@ namespace agf_parser_uwp
                 // Limit to only png or jpg files.
                 if (file.ContentType == "image/png" || file.ContentType == "image/jpeg")
                 {
-                    Images.Add(await LoadImageInfo(file));
+                    Games.Add(await LoadImageInfo(file));
                 }
             }
         }
@@ -178,7 +178,7 @@ namespace agf_parser_uwp
 
         private double _itemSize;
 
-        private void DeleteSelectedImage() => Images.Remove(ImageGridView.SelectedItem as GameInfo);
+        private void DeleteSelectedImage() => Games.Remove(ImageGridView.SelectedItem as GameInfo);
 
         private void FitScreenToggle_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {

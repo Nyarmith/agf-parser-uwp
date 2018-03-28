@@ -12,6 +12,10 @@ namespace agf_parser_uwp
     public class GameInfo
     {
         public string name { get; set; }
+        public string modifyDate { get; set; }
+        public string downloadDate { get; set; }
+        public string playDate { get; set; }
+        public string author { get; set; }
         public GameInfo() { name = "GameInfo";  }
     }
 
@@ -24,6 +28,8 @@ namespace agf_parser_uwp
     public class GameFile
     {
         public string name { get; set; }
+        public string modifyDate { get; set; }
+        public string downloadDate { get; set; }
         public GameFile() { name = "GameFile"; }
     }
 }

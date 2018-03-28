@@ -55,19 +55,19 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Image x:Name="ItemImage" 
-                    Source="{x:Bind ImageSource}" 
+                    Source="{x:Bind name}" 
                     Stretch="Uniform" />
                 <StackPanel Orientation="Vertical"
                             Grid.Row="1">
-                    <TextBlock Text="{x:Bind ImageTitle}"
+                    <TextBlock Text="{x:Bind author}"
                                HorizontalAlignment="Center"
                                Style="{StaticResource SubtitleTextBlockStyle}" />
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Center">
-                        <TextBlock Text="{x:Bind ImageFileType}"
+                        <TextBlock Text="{x:Bind downloadDate}"
                                    HorizontalAlignment="Center"
                                    Style="{StaticResource CaptionTextBlockStyle}" />
-                        <TextBlock Text="{x:Bind ImageDimensions}"
+                        <TextBlock Text="{x:Bind modifyDate}"
                                    HorizontalAlignment="Center"
                                    Style="{StaticResource CaptionTextBlockStyle}"
                                    Margin="8,0,0,0" />
