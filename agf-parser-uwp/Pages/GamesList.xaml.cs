@@ -72,6 +72,8 @@ namespace agf_parser_uwp
             base.OnNavigatedTo(e);
         }
 
+        /*
+        //TODO: Implement this
         // Called by the Loaded event of the ImageGridView.
         private async void StartConnectedAnimationForBackNavigation()
         {
@@ -86,6 +88,7 @@ namespace agf_parser_uwp
                 }
             }
         }
+        */
 
         private async Task GetItemsAsync()
         {

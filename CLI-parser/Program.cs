@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using agf_parser_uwp.Parser;
+using agf_parser_uwp;
 
 namespace CLI_parser
 {

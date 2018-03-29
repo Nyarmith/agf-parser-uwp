@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using agf_parser_uwp.Parser;
+using agf_parser_uwp;
 using System.Collections.Generic;
 
 namespace agf_parser_unit_tests
