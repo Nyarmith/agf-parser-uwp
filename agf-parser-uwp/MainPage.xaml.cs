@@ -92,7 +92,7 @@ namespace agf_parser_uwp
                     break;
 
                 case "BrowseLocal":
-                    ContentFrame.Navigate(typeof(BrowsePageLocal));
+                    ContentFrame.Navigate(typeof(GamesList));
                     break;
 
                 case "Creator":

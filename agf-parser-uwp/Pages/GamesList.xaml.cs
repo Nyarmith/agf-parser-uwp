@@ -105,32 +105,13 @@ namespace agf_parser_uwp
             foreach (StorageFile file in fileList)
             {
                 // Limit to only png or jpg files.
-                if (file.ContentType == "image/png" || file.ContentType == "image/jpeg")
+                if (file.ContentType == "text/json" || file.ContentType == "text/agf")
                 {
-                    Games.Add(await LoadImageInfo(file));
+                    Games.Add(new GameInfo(file.Name,file.DateCreated.ToString(),"placehold","placeHold","sergey"));
                 }
             }
         }
 
-        public async static Task<GameInfo> LoadImageInfo(StorageFile file)
-        {
-            // Open a stream for the selected file.
-            // The 'using' block ensures the stream is disposed
-            // after the image is loaded.
-            using (IRandomAccessStream fileStream = await file.OpenReadAsync())
-            {
-                // Create a bitmap to be the image source.
-                BitmapImage bitmapImage = new BitmapImage();
-                bitmapImage.SetSource(fileStream);
-
-                var properties = await file.Properties.GetImagePropertiesAsync();
-                GameInfo info = new GameInfo(
-                    properties, file, bitmapImage,
-                    file.DisplayName, file.DisplayType);
-
-                return info;
-            }
-        }
         public double ItemSize
         {
             get => _itemSize;
