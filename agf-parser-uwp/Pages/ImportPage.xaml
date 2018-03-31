@@ -8,6 +8,11 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <ListView>
+            <AppBar x:Name="CurrentPath">
+            </AppBar>
+            <Grid x:Name="FileList">
+            </Grid>
+        </ListView>
     </Grid>
 </Page>
