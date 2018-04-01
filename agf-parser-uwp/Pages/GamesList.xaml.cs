@@ -42,12 +42,8 @@ using Windows.UI.Xaml.Navigation;
 
 namespace agf_parser_uwp
 {
-    public sealed partial class GamesList : Page, INotifyPropertyChanged
+    public sealed partial class GamesList : Page
     {
-        private GameInfo persistedItem;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public ObservableCollection<GameInfo> Games { get; } = new ObservableCollection<GameInfo>();
 
         public GamesList()
@@ -55,7 +51,7 @@ namespace agf_parser_uwp
             //this.InitializeComponent();
         }
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
                 AppViewBackButtonVisibility.Collapsed;
@@ -66,7 +62,7 @@ namespace agf_parser_uwp
 
             if (Games.Count == 0)
             {
-                await GetItemsAsync();
+                UpdateFiles();
             }
 
             base.OnNavigatedTo(e);
@@ -90,79 +86,32 @@ namespace agf_parser_uwp
         }
         */
 
-        private async Task GetItemsAsync()
+        private void UpdateFiles()
         {
             // https://docs.microsoft.com/uwp/api/windows.ui.xaml.controls.image#Windows_UI_Xaml_Controls_Image_Source
             // See "Using a stream source to show images from the Pictures library".
             // This code is modified to get images from the app folder.
 
             // Get the app folder where the images are stored.
-            StorageFolder appInstalledFolder = Package.Current.InstalledLocation;
-            StorageFolder assets = await appInstalledFolder.GetFolderAsync("Assets\\Samples");
+            string folderpath = Package.Current.InstalledLocation.Path + "\\Assets\\Adventures\\";
 
-            // Get and process files in folder
-            IReadOnlyList<StorageFile> fileList = await assets.GetFilesAsync();
-            foreach (StorageFile file in fileList)
+            string [] files = System.IO.Directory.GetFiles(folderpath);
+            foreach (string file in files)
             {
-                // Limit to only png or jpg files.
-                if (file.ContentType == "text/json" || file.ContentType == "text/agf")
+                // Limit to only json or agf files.
+                int l = file.Length;
+                if (file.Substring(l-5) == ".json" || file.Substring(l-4) == ".agf")
                 {
-                    Games.Add(new GameInfo(file.Name,file.DateCreated.ToString(),"placehold","placeHold","sergey"));
+                    //get file info from making an ag object
+                    AdventureGame ag = AdventureGame.loadFromFile(folderpath + file);
+                    System.IO.FileInfo finfo = new System.IO.FileInfo(folderpath + file);
+                    Games.Add(new GameInfo(finfo.Name,finfo.CreationTime.ToShortDateString(),
+                        finfo.CreationTime.ToLongDateString(),
+                        finfo.LastAccessTime.ToShortDateString(),
+                        ag.author));
                 }
             }
         }
-
-        public double ItemSize
-        {
-            get => _itemSize;
-            set
-            {
-                if (_itemSize != value)
-                {
-                    _itemSize = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ItemSize)));
-                }
-            }
-        }
-        private void DetermineItemSize()
-        {
-            if (FitScreenToggle != null
-                && FitScreenToggle.IsOn == true
-                && ImageGridView != null
-                && ZoomSlider != null)
-            {
-                // The 'margins' value represents the total of the margins around the
-                // image in the grid item. 8 from the ItemTemplate root grid + 8 from
-                // the ItemContainerStyle * (Right + Left). If those values change, 
-                // this value needs to be updated to match.
-                int margins = (int)this.Resources["LargeItemMarginValue"] * 4;
-                double gridWidth = ImageGridView.ActualWidth - (int)this.Resources["DesktopWindowSidePaddingValue"];
-
-                if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" &&
-                    UIViewSettings.GetForCurrentView().UserInteractionMode == UserInteractionMode.Touch)
-                {
-                    margins = (int)this.Resources["SmallItemMarginValue"] * 4;
-                    gridWidth = ImageGridView.ActualWidth - (int)this.Resources["MobileWindowSidePaddingValue"];
-                }
-
-                double ItemWidth = ZoomSlider.Value + margins;
-                // We need at least 1 column.
-                int columns = (int)Math.Max(gridWidth / ItemWidth, 1);
-
-                // Adjust the available grid width to account for margins around each item.
-                double adjustedGridWidth = gridWidth - (columns * margins);
-
-                ItemSize = (adjustedGridWidth / columns);
-            }
-            else
-            {
-                ItemSize = ZoomSlider.Value;
-            }
-        }
-
-        private double _itemSize;
-
-        private void DeleteSelectedImage() => Games.Remove(ImageGridView.SelectedItem as GameInfo);
 
         private void FitScreenToggle_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
@@ -171,7 +120,7 @@ namespace agf_parser_uwp
 
         private void ImageGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            this.Frame.Navigate(typeof(DetailPage), e.ClickedItem);
+            //this.Frame.Navigate(typeof(DetailPage), e.ClickedItem);
         }
     }
 }

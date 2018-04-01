@@ -112,12 +112,14 @@
                     RelativePanel.AlignRightWithPanel="True"
                     OverflowButtonVisibility="Collapsed"
                     DefaultLabelPosition="Right" d:IsHidden="True">
+
             <AppBarButton Icon="Zoom"
                           Label="Zoom"
                           Flyout="{StaticResource zoomFlyout}" />
-            <AppBarButton Icon="Delete"
+
+            <!--<AppBarButton Icon="Delete"
                           Label="Delete selected image"
-                          Click="{x:Bind DeleteSelectedImage}" />
+                          lick="{x:Bind DeleteSelectedImage}" />-->
         </CommandBar>
 
         <GridView x:Name="ImageGridView"
