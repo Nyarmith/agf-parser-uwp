@@ -14,8 +14,6 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
-//initializecomponent https://stackoverflow.com/questions/6925584/the-name-initializecomponent-does-not-exist-in-the-current-context
-
 namespace agf_parser_uwp
 {
     public sealed partial class GamesList : Page, INotifyPropertyChanged

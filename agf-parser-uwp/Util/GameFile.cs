@@ -25,8 +25,9 @@ namespace agf_parser_uwp
 
     public class GameInfo : GameFile
     {
-        public string gameTitle { get; set; }
+        public string gameTitle  { get; set; }
         public string gameAuthor { get; set; }
+        public int gameRating { get; set; } = 3;
 
         public GameInfo(string title, string author, GameFile gf) : base(gf)
         {

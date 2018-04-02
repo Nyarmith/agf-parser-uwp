@@ -70,7 +70,7 @@ namespace agf_parser_uwp
 
             foreach (string file in files)
             {
-                dirObjects.Add(new GridObj(file, "Document"));
+                dirObjects.Add(new GridObj(file, "Page"));
             }
 
             //PropertyChanged(this, new PropertyChangedEventArgs(nameof(dirObjects)));

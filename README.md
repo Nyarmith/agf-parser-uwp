@@ -10,3 +10,4 @@ TODO:
 - Add advanced browsing features and interface
 - Add ability to save and resume game
 - add app icon
+- try using fonticons instead of symbols or otherwise fix theme from making dark folders (with bright bg at least):wq

@@ -7,13 +7,66 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <!-- TODO: Add templates here-->
+    <Page.Resources>
+        <Thickness x:Key="BoxItemMargin">3</Thickness>
+        <Thickness x:Key="BoxItemPadding">2</Thickness>
+
+        <DataTemplate x:Key="PlayList_DefaultItemTemplate"
+                      x:DataType="local:GameInfo">
+            <Grid Height="120" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Padding="{StaticResource BoxItemPadding}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{StaticResource BoxItemMargin}">
+                    <Viewbox Stretch="Uniform" Height="50" Width="176">
+
+                    <TextBlock Width="176" TextWrapping="Wrap" Text="{x:Bind gameTitle}"  TextAlignment="Center"
+                               Style="{StaticResource BodyTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Viewbox>
+                    <Viewbox Stretch="Uniform" Height="12" Width="160">
+                    <TextBlock Text="{x:Bind gameRating}" 
+                               Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Viewbox>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PlayList_SelectedItemTemplate"
+                      x:DataType="local:GameInfo">
+            <Grid Height="120" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Padding="{StaticResource BoxItemPadding}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{StaticResource BoxItemMargin}">
+                    <Viewbox Stretch="Uniform" Height="50" Width="176">
+
+                    <TextBlock Width="176" TextWrapping="Wrap" Text="{x:Bind gameTitle}"  TextAlignment="Center"
+                               Style="{StaticResource BodyTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Viewbox>
+                    <Viewbox Stretch="Uniform" Height="12" Width="160">
+                    <TextBlock Text="{x:Bind gameRating}" 
+                               Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Viewbox>
+                    <Button Click="playHandler" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                        <SymbolIcon Symbol="Play" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <local:PlayListSelector x:Key="TemplateSelector"
+                                DefaultTemplate="{StaticResource PlayList_DefaultItemTemplate}"
+                                SelectedItemTemplate="{StaticResource PlayList_SelectedItemTemplate}"/>
+    </Page.Resources>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock x:Name="TitleTextBlock"
+        <!--<TextBlock x:Name="TitleTextBlock"
                    Text="Game-List"
                    Style="{StaticResource TitleTextBlockStyle}"
-                   Margin="24,0,0,24" />
+                   Margin="24,0,0,24" />-->
 
         <CommandBar x:Name="MainCommandBar"
                     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -22,13 +75,16 @@
                     DefaultLabelPosition="Right" d:IsHidden="True">
         </CommandBar>
 
-        <GridView x:Name="ImageGridView"
-                  ItemsSource="List Of Games"
-                  Margin="0,0,0,8"
-                  IsItemClickEnabled="True"
+        <GridView x:Name="GameGridView"
+                  ItemsSource="{x:Bind Games}"
+                  Margin="0,0,0,4"
+                  IsItemClickEnabled="False"
+                  SelectionChanged="ImageGridView_SelectionChanged"
                   RelativePanel.AlignLeftWithPanel="True"
                   RelativePanel.AlignRightWithPanel="True"
-                  RelativePanel.Below="TitleTextBlock">
+                  RelativePanel.AlignBottomWithPanel="True"
+                  RelativePanel.Below="MainCommandBar"
+                  ItemTemplateSelector="{StaticResource TemplateSelector}">
 
             <!--Loaded="{x:Bind StartConnectedAnimationForBackNavigation}"
                   ItemsPanel="{StaticResource ImageGridView_ItemsPanelTemplate}"

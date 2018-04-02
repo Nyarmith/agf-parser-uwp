@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -17,14 +19,39 @@ using Windows.UI.Xaml.Navigation;
 
 namespace agf_parser_uwp
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class BrowsePageNet : Page
+    public sealed partial class BrowsePageNet : Page, INotifyPropertyChanged
     {
+        private WebAPI netapi;
         public BrowsePageNet()
         {
             this.InitializeComponent();
+            netapi = new WebAPI();
+            refreshCurrentGames();
+        }
+
+        //get the freshest games on the web
+        public void refreshCurrentGames()
+        {
+            List<string>  netfiles = netapi.listFiles();
+            foreach(string nf in netfiles)
+            {
+                Games.Add(new GameInfo(nf,"network-author",nf,"today?","today!"));
+            }
+        }
+
+        public ObservableCollection<GameInfo> Games { get; } = new ObservableCollection<GameInfo>();
+
+        public event PropertyChangedEventHandler PropertyChanged
+        {
+            add
+            {
+                ((INotifyPropertyChanged)Games).PropertyChanged += value;
+            }
+
+            remove
+            {
+                ((INotifyPropertyChanged)Games).PropertyChanged -= value;
+            }
         }
     }
 }

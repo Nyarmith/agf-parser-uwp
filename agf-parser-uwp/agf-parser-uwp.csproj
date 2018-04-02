@@ -127,7 +127,7 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\GameFile.cs" />
-    <Compile Include="Util\NetworkGames.cs" />
+    <Compile Include="Util\WebAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -135,6 +135,14 @@
     </AppxManifest>
     <None Include="agf-parser-uwp_TemporaryKey.pfx" />
     <Content Include="Assets\Adventures\basic_adv.json" />
+    <Content Include="Assets\Adventures\fodder1.json" />
+    <Content Include="Assets\Adventures\fodder2.json" />
+    <Content Include="Assets\Adventures\fodder4.json" />
+    <Content Include="Assets\Adventures\fodder3.json" />
+    <Content Include="Assets\Adventures\UIIpsum.json" />
+    <Content Include="client_secrets.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
@@ -189,6 +197,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Google.Apis.Drive.v3">
+      <Version>1.32.2.1170</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.0.6</Version>
     </PackageReference>

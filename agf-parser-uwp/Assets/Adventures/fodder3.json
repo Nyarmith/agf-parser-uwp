@@ -1,0 +1,26 @@
+{
+  "title":"very long title to test out scaling of things, is this the chosen savior that will fight the demon lord?!",
+  "author":"nu",
+  "gamevars" : {"inventory":{"baseball":true, "bat":true}, "user":{}},
+  "win_states" : ["right_result"],
+  "start_state" : "question",
+  "states" : {
+
+    "question" : {"text":"do you know what 2+2 is?", "options":[
+      ["","","right_result","Yes, 4"],
+     ["","","wrong_result","Yes, 3"],
+      ["","user::error=True","answer","No Just Tell Me"]
+    ]},
+
+    "right_result" : {
+      "text":"you are correct! <cond expr='user::error'>Good job fixing your error!</cond> ",
+      "options":[]},
+
+    "wrong_result" : {"text":"you are wrong!", "options":[
+        ["","user::error=true","question","Oops!"]]},
+
+    "answer":{"text":"it is 4!", "options":[
+        ["","","question","Ok let’s try again"]
+      ]}
+    }
+}

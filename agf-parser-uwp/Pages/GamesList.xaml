@@ -59,9 +59,11 @@
                     Stretch="Uniform" /> -->
                 <StackPanel Orientation="Vertical"
                             Grid.Row="1">
-                    <TextBlock Text="{x:Bind gameTitle}"
+                    <Viewbox Width="{Binding ItemSize, ElementName=page}" Height="40">
+                        <TextBlock Text="{x:Bind gameTitle}"
                                HorizontalAlignment="Center"
                                Style="{StaticResource SubtitleTextBlockStyle}" />
+                    </Viewbox>
                     <TextBlock Text="{x:Bind gameAuthor}"
                                HorizontalAlignment="Center"
                                Style="{StaticResource CaptionTextBlockStyle}" />
@@ -111,10 +113,6 @@
     </Page.Resources>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock x:Name="TitleTextBlock"
-                   Text="Collection"
-                   Style="{StaticResource TitleTextBlockStyle}"
-                   Margin="24,0,0,24" />
 
         <CommandBar x:Name="MainCommandBar"
                     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -124,7 +122,7 @@
 
             <AppBarButton Icon="Zoom"
                           Label="Zoom"
-                          Flyout="{StaticResource zoomFlyout}" />
+                          Flyout="{StaticResource zoomFlyout}" Visibility="Collapsed"/>
 
             <!--<AppBarButton Icon="Delete"
                           Label="Delete selected image"
@@ -139,7 +137,6 @@
                   IsItemClickEnabled="True"
                   RelativePanel.AlignLeftWithPanel="True"
                   RelativePanel.AlignRightWithPanel="True"
-                  RelativePanel.Below="TitleTextBlock"
                   ItemsPanel="{StaticResource ImageGridView_ItemsPanelTemplate}"
                   ItemTemplate="{StaticResource ImageGridView_DefaultItemTemplate}"
                   ItemContainerStyle="{StaticResource ImageGridView_DefaultItemContainerStyle}">

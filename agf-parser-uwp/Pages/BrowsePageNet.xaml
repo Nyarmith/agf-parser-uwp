@@ -7,8 +7,31 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
-    
-    <!-- TODO: Add templates here-->
+
+    <Page.Resources>
+        <DataTemplate x:Name="netItem_Template"
+                      x:DataType="local:GameInfo">
+            <Grid Height="150" Width="150" Padding="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Vertical" Grid.Row="1" Margin="4">
+                    <Viewbox Stretch="Uniform" Height="50" Width="142">
+                        <TextBlock Text="{x:Bind fileName}"
+                                   Height="50" Width="142" 
+                                   Style="{StaticResource BodyTextBlockStyle}" />
+                    </Viewbox>
+                    <Viewbox Stretch="Uniform" Height="14" Width="142">
+                        <TextBlock Text="{x:Bind gameAuthor}" 
+                                   Height="14" Width="142" 
+                                   Style="{StaticResource CaptionTextBlockStyle}" />
+                    </Viewbox>
+                    <!-- todo: retrieve and add more details here, maybe drive has file annotations or something -->
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock x:Name="TitleTextBlock"
@@ -24,12 +47,13 @@
         </CommandBar>
 
         <GridView x:Name="ImageGridView"
-                  ItemsSource="Bottom Half Of Screen"
+                  ItemsSource="{x:Bind Games}"
                   Margin="0,0,0,8"
-                  IsItemClickEnabled="True"
+                  IsItemClickEnabled="False"
                   RelativePanel.AlignLeftWithPanel="True"
                   RelativePanel.AlignRightWithPanel="True"
-                  RelativePanel.Below="TitleTextBlock">
+                  RelativePanel.Below="TitleTextBlock"
+                  ItemTemplate="{StaticResource netItem_Template}">
 
             <!--Loaded="{x:Bind StartConnectedAnimationForBackNavigation}"
                   ItemsPanel="{StaticResource ImageGridView_ItemsPanelTemplate}"
