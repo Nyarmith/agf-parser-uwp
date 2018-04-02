@@ -134,7 +134,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="agf-parser-uwp_TemporaryKey.pfx" />
-    <None Include="Assets\Adventures\basic_adv.json" />
+    <Content Include="Assets\Adventures\basic_adv.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
@@ -159,10 +159,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <EmbeddedResource Include="Pages\GamesList.xaml">
+    <Page Include="Pages\GamesList.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
+    </Page>
     <Page Include="Pages\GameView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

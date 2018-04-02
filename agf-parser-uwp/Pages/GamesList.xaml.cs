@@ -1,28 +1,4 @@
-﻿//  ---------------------------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-// 
-//  The MIT License (MIT)
-// 
-//  Permission is hereby granted, free of charge, to any person obtaining a copy
-//  of this software and associated documentation files (the "Software"), to deal
-//  in the Software without restriction, including without limitation the rights
-//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the Software is
-//  furnished to do so, subject to the following conditions:
-// 
-//  The above copyright notice and this permission notice shall be included in
-//  all copies or substantial portions of the Software.
-// 
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//  THE SOFTWARE.
-//  ---------------------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -42,13 +18,14 @@ using Windows.UI.Xaml.Navigation;
 
 namespace agf_parser_uwp
 {
-    public sealed partial class GamesList : Page
+    public sealed partial class GamesList : Page, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<GameInfo> Games { get; } = new ObservableCollection<GameInfo>();
 
         public GamesList()
         {
-            //this.InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -103,8 +80,8 @@ namespace agf_parser_uwp
                 if (file.Substring(l-5) == ".json" || file.Substring(l-4) == ".agf")
                 {
                     //get file info from making an ag object
-                    AdventureGame ag = AdventureGame.loadFromFile(folderpath + file);
-                    System.IO.FileInfo finfo = new System.IO.FileInfo(folderpath + file);
+                    AdventureGame ag = AdventureGame.loadFromFile(file);
+                    System.IO.FileInfo finfo = new System.IO.FileInfo(file);
                     Games.Add(new GameInfo(finfo.Name,finfo.CreationTime.ToShortDateString(),
                         finfo.CreationTime.ToLongDateString(),
                         finfo.LastAccessTime.ToShortDateString(),
@@ -121,6 +98,60 @@ namespace agf_parser_uwp
         private void ImageGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             //this.Frame.Navigate(typeof(DetailPage), e.ClickedItem);
+            //do a thing
         }
+
+        private void DetermineItemSize()
+        {
+            if (FitScreenToggle != null
+                && FitScreenToggle.IsOn == true
+                && ImageGridView != null
+                && ZoomSlider != null)
+            {
+                // The 'margins' value represents the total of the margins around the
+                // image in the grid item. 8 from the ItemTemplate root grid + 8 from
+                // the ItemContainerStyle * (Right + Left). If those values change, 
+                // this value needs to be updated to match.
+                int margins = (int)this.Resources["LargeItemMarginValue"] * 4;
+                double gridWidth = ImageGridView.ActualWidth - (int)this.Resources["DesktopWindowSidePaddingValue"];
+
+                if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" &&
+                    UIViewSettings.GetForCurrentView().UserInteractionMode == UserInteractionMode.Touch)
+                {
+                    margins = (int)this.Resources["SmallItemMarginValue"] * 4;
+                    gridWidth = ImageGridView.ActualWidth - (int)this.Resources["MobileWindowSidePaddingValue"];
+                }
+
+                double ItemWidth = ZoomSlider.Value + margins;
+                // We need at least 1 column.
+                int columns = (int)Math.Max(gridWidth / ItemWidth, 1);
+
+                // Adjust the available grid width to account for margins around each item.
+                double adjustedGridWidth = gridWidth - (columns * margins);
+
+                ItemSize = (adjustedGridWidth / columns);
+            }
+            else
+            {
+                ItemSize = ZoomSlider.Value;
+            }
+        }
+
+        public double ItemSize
+        {
+            get => _itemSize;
+            set
+            {
+                if (_itemSize != value)
+                {
+                    _itemSize = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ItemSize)));
+                }
+            }
+        }
+
+        private double _itemSize;
+
+
     }
 }
