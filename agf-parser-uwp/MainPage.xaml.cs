@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -20,11 +21,17 @@ namespace agf_parser_uwp
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
+
+        public string currentPage = "Welcome to Adventure-Game UWP Client!";
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public MainPage()
         {
             this.InitializeComponent();
+            updateTitle();
         }
 
         private void Loaded(object sender, RoutedEventArgs e)
@@ -62,12 +69,20 @@ namespace agf_parser_uwp
             if (args.IsSettingsSelected)
             {
                 ContentFrame.Navigate(typeof(SettingsPage));
+                currentPage = "Settings";
+                updateTitle();
             }
             else
             {
                 NavigationViewItem item = args.SelectedItem as NavigationViewItem;
                 Navigate(item);
+                updateTitle();
             }
+        }
+
+        private void updateTitle()
+        {
+            MainNavView.Header = currentPage;
         }
 
         private void Navigate(NavigationViewItem item)
@@ -75,33 +90,46 @@ namespace agf_parser_uwp
             switch (item.Tag)
             {
                 case "Play":
+                    currentPage = "Play";
                     ContentFrame.Navigate(typeof(PlayList));
                     break;
 
                 case "Resume":
                     //List Games In Progress
+                    currentPage = "In-Progress";
                     ContentFrame.Navigate(typeof(ResumePage));
                     break;
 
                 case "Import":
+                    currentPage = "Browsing Local Filesystem";
                     ContentFrame.Navigate(typeof(ImportPage));
                     break;
 
                 case "BrowseNet":
+                    currentPage = "Browsing Network Adventures";
                     ContentFrame.Navigate(typeof(BrowsePageNet));
                     break;
 
                 case "BrowseLocal":
+                    currentPage = "Browsing Adventure Collection";
                     ContentFrame.Navigate(typeof(GamesList));
                     break;
 
                 case "Creator":
+                    currentPage = "Adventure-Game Studio";
                     ContentFrame.Navigate(typeof(Creator));
                     //consider using base.OnNavigatedTo here
                     ContentFrame.Navigate(typeof(Creator));
                     break;
             }
+
+            //updateProperty(nameof(currentPage));
         }
 
+        private void updateProperty(string name)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
     }
 }

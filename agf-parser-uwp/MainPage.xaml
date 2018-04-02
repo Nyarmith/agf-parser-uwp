@@ -13,10 +13,14 @@
         Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
         Loaded="Loaded"
         ItemInvoked="ItemInvoked"
-        SelectionChanged="SelectionChanged" Visibility="Visible" CompactModeThresholdWidth="631" FontFamily="Segoe UI">
+        SelectionChanged="SelectionChanged"
+        Visibility="Visible"
+        CompactModeThresholdWidth="631"
+        FontFamily="Segoe UI"
+        AlwaysShowHeader="True">
         <!-- CompactModeThresholdWidth="2000" CompactPaneLength="2000" 
              Overriding Thresholds so the app never minimizes the menu -->
-        
+
         <NavigationView.MenuItems>
             <!-- <NavigationViewItemSeparator/> -->
             <NavigationViewItem Icon="Play" Content="Start New Game" Tag="Play" />
@@ -39,10 +43,9 @@
                     <TextBlock Style="{StaticResource TitleTextBlockStyle}"
                            FontSize="28"
                            VerticalAlignment="Center"
-                           Text="Placeholder!"/> <!--TODO: Replace this with a x:Bind-->
+                           Text="{Binding}"/>
+                    <!--TODO: Replace this with a x:Bind-->
                     <CommandBar Grid.Column="1"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
                             DefaultLabelPosition="Right"
                             Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
                         <!--<AppBarButton Label="Refresh" Icon="Refresh"/>-->

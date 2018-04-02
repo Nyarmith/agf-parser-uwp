@@ -7,12 +7,43 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ListView>
-            <AppBar x:Name="CurrentPath">
-            </AppBar>
-            <Grid x:Name="FileList">
+    <Page.Resources>
+        <DataTemplate x:Key="ImportPage_fsObjTemplate"
+                  x:DataType="local:GridObj">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Vertical" Grid.Row="1">
+                    <TextBlock Text="{x:Bind name}"/>
+                    <SymbolIcon Symbol="{x:Bind icon}" />
+                </StackPanel>
             </Grid>
-        </ListView>
-    </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel x:Name="pathPanel"
+                    RelativePanel.AlignTopWithPanel="True"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True"
+                    Background="{StaticResource AppBarItemDisabledForegroundThemeBrush}">
+            <TextBlock Text="{x:Bind currentPath, Mode=OneWay}"
+                       Style="{StaticResource BodyTextBlockStyle}"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"/>
+        </StackPanel>
+        <GridView x:Name="FileList"
+                  RelativePanel.Below="pathPanel"
+                  ItemsSource="{x:Bind dirObjects, Mode=OneWay}"
+                  ItemClick="FileList_ItemClick"
+                  IsItemClickEnabled="True"
+                  RelativePanel.AlignLeftWithPanel="True"
+                  RelativePanel.AlignRightWithPanel="True"
+                  RelativePanel.AlignBottomWithPanel="True"
+                  ItemTemplate="{StaticResource ImportPage_fsObjTemplate}">
+        </GridView>
+    </RelativePanel>
 </Page>

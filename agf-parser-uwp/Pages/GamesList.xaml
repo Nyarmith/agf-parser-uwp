@@ -54,17 +54,20 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Image x:Name="ItemImage" 
-                    Source="{x:Bind name}" 
-                    Stretch="Uniform" />
+                <!--<Image x:Name="ItemImage"  Potential TODO
+                    Source="{x:Bind gameTitle}" 
+                    Stretch="Uniform" /> -->
                 <StackPanel Orientation="Vertical"
                             Grid.Row="1">
-                    <TextBlock Text="{x:Bind author}"
+                    <TextBlock Text="{x:Bind gameTitle}"
                                HorizontalAlignment="Center"
                                Style="{StaticResource SubtitleTextBlockStyle}" />
+                    <TextBlock Text="{x:Bind gameAuthor}"
+                               HorizontalAlignment="Center"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Center">
-                        <TextBlock Text="{x:Bind downloadDate}"
+                        <TextBlock Text="{x:Bind createDate}"
                                    HorizontalAlignment="Center"
                                    Style="{StaticResource CaptionTextBlockStyle}" />
                         <TextBlock Text="{x:Bind modifyDate}"
@@ -72,6 +75,7 @@
                                    Style="{StaticResource CaptionTextBlockStyle}"
                                    Margin="8,0,0,0" />
                     </StackPanel>
+                    <RelativePanel>
                     <telerikInput:RadRating Value="3"
                                             IsReadOnly="True">
                         <telerikInput:RadRating.FilledIconContentTemplate>
@@ -87,6 +91,10 @@
                             </DataTemplate>
                         </telerikInput:RadRating.EmptyIconContentTemplate>
                     </telerikInput:RadRating>
+                        <Button RelativePanel.AlignRightWithPanel="True" Background="Transparent">
+                            <SymbolIcon x:Name="more" Symbol="More" />
+                        </Button>
+                    </RelativePanel>
                 </StackPanel>
                 <Ellipse />
             </Grid>

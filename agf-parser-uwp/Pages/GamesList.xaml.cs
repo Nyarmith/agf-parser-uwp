@@ -82,10 +82,9 @@ namespace agf_parser_uwp
                     //get file info from making an ag object
                     AdventureGame ag = AdventureGame.loadFromFile(file);
                     System.IO.FileInfo finfo = new System.IO.FileInfo(file);
-                    Games.Add(new GameInfo(finfo.Name,finfo.CreationTime.ToShortDateString(),
+                    Games.Add(new GameInfo(ag.title, ag.author, finfo.CreationTime.ToShortDateString(),
                         finfo.CreationTime.ToLongDateString(),
-                        finfo.LastAccessTime.ToShortDateString(),
-                        ag.author));
+                        finfo.LastAccessTime.ToShortDateString()));
                 }
             }
         }
