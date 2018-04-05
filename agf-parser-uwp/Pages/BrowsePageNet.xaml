@@ -34,10 +34,6 @@
     </Page.Resources>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock x:Name="TitleTextBlock"
-                   Text="Community Adventures"
-                   Style="{StaticResource TitleTextBlockStyle}"
-                   Margin="24,0,0,24" />
 
         <CommandBar x:Name="MainCommandBar"
                     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -45,23 +41,69 @@
                     OverflowButtonVisibility="Collapsed"
                     DefaultLabelPosition="Right" d:IsHidden="True">
         </CommandBar>
+        <Grid 
+              RelativePanel.AlignBottomWithPanel="True"
+              RelativePanel.AlignTopWithPanel="True"
+              RelativePanel.AlignLeftWithPanel="True"
+              RelativePanel.AlignRightWithPanel="True">
 
-        <GridView x:Name="ImageGridView"
+            <!--
+            TODO: Add rest of styling, make scrollable file view type thing (and searchable)
+            -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+            </Grid>
+            <Grid Grid.Row="1">
+
+            </Grid>
+
+        </Grid>
+
+
+
+        <!--<SplitView RelativePanel.AlignTopWithPanel="True"
+                   RelativePanel.AlignLeftWithPanel="True"
+                   RelativePanel.AlignRightWithPanel="True"
+                   IsPaneOpen="True"
+                   DisplayMode="Inline"
+                   OpenPaneLength="400">
+
+            <SplitView.Pane>
+                <StackPanel>
+                    <TextBlock x:Name="FeaturedGamesBlock"
+                   Text="Featured Community Adventures"
+                   Style="{StaticResource TitleTextBlockStyle}"
+                   Margin="0,0,0,0" />
+                    <GridView x:Name="ImageGridView"
                   ItemsSource="{x:Bind Games}"
                   Margin="0,0,0,8"
                   IsItemClickEnabled="False"
-                  RelativePanel.AlignLeftWithPanel="True"
-                  RelativePanel.AlignRightWithPanel="True"
-                  RelativePanel.Below="TitleTextBlock"
                   ItemTemplate="{StaticResource netItem_Template}">
+                    </GridView>
+                </StackPanel>
+            </SplitView.Pane>
 
-            <!--Loaded="{x:Bind StartConnectedAnimationForBackNavigation}"
-                  ItemsPanel="{StaticResource ImageGridView_ItemsPanelTemplate}"
-                  ItemTemplate="{StaticResource ImageGridView_DefaultItemTemplate}"
-                  ItemContainerStyle="{StaticResource ImageGridView_DefaultItemContainerStyle}">
-                  ItemClick="ImageGridView_ItemClick"
-                 >-->
-        </GridView>
+            <SplitView.Content>
+                <StackPanel>
+                    <TextBlock x:Name="TopGamesBlock"
+                   Text="Popular Adventures"
+                   Style="{StaticResource TitleTextBlockStyle}"
+                   Margin="24,0,0,24" />
+                    <ListView x:Name="TopAdventuerGames"
+                  ItemsSource="{x:Bind Games}"
+                  Margin="0,0,0,8"
+                  IsItemClickEnabled="False"
+                  ItemTemplate="{StaticResource netItem_Template}">
+                    </ListView>
+                </StackPanel>
+            </SplitView.Content>
+
+        </SplitView>-->
+
 
     </RelativePanel>
 </Page>

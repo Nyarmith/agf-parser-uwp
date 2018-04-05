@@ -8,12 +8,12 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <Thickness x:Key="BoxItemMargin">3</Thickness>
-        <Thickness x:Key="BoxItemPadding">2</Thickness>
+        <Thickness x:Key="BoxItemMargin">8</Thickness>
+        <Thickness x:Key="BoxItemPadding">3</Thickness>
 
         <DataTemplate x:Key="PlayList_DefaultItemTemplate"
                       x:DataType="local:GameInfo">
-            <Grid Height="120" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Padding="{StaticResource BoxItemPadding}">
+            <Grid Height="120" Width="200" VerticalAlignment="Top" HorizontalAlignment="Left" Padding="{StaticResource BoxItemPadding}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -35,7 +35,7 @@
 
         <DataTemplate x:Key="PlayList_SelectedItemTemplate"
                       x:DataType="local:GameInfo">
-            <Grid Height="120" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Padding="{StaticResource BoxItemPadding}">
+            <Grid Height="120" Width="200" VerticalAlignment="Top" HorizontalAlignment="Left" Padding="{StaticResource BoxItemPadding}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -60,6 +60,15 @@
         <local:PlayListSelector x:Key="TemplateSelector"
                                 DefaultTemplate="{StaticResource PlayList_DefaultItemTemplate}"
                                 SelectedItemTemplate="{StaticResource PlayList_SelectedItemTemplate}"/>
+
+        
+        <Style x:Key="PlayList_DefaultItemContainerStyle"
+               TargetType="GridViewItem">
+            <Setter Property="Background"
+                    Value="LightGray" />
+            <!--<Setter Property="Margin"
+                    Value="0,0,0,4" />-->
+        </Style>
     </Page.Resources>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -84,7 +93,8 @@
                   RelativePanel.AlignRightWithPanel="True"
                   RelativePanel.AlignBottomWithPanel="True"
                   RelativePanel.Below="MainCommandBar"
-                  ItemTemplateSelector="{StaticResource TemplateSelector}">
+                  ItemTemplateSelector="{StaticResource TemplateSelector}"
+                  ItemContainerStyle="{StaticResource PlayList_DefaultItemContainerStyle}">
 
             <!--Loaded="{x:Bind StartConnectedAnimationForBackNavigation}"
                   ItemsPanel="{StaticResource ImageGridView_ItemsPanelTemplate}"

@@ -59,10 +59,16 @@
                     Stretch="Uniform" /> -->
                 <StackPanel Orientation="Vertical"
                             Grid.Row="1">
-                    <Viewbox Width="{Binding ItemSize, ElementName=page}" Height="40">
+                    <Viewbox Width="180"
+                             Height="50"
+                             Stretch="Uniform">
                         <TextBlock Text="{x:Bind gameTitle}"
+                               Width="180"
+                               TextAlignment="Center"
+                               VerticalAlignment="Center"
                                HorizontalAlignment="Center"
-                               Style="{StaticResource SubtitleTextBlockStyle}" />
+                               TextWrapping="Wrap"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
                     </Viewbox>
                     <TextBlock Text="{x:Bind gameAuthor}"
                                HorizontalAlignment="Center"
@@ -105,7 +111,7 @@
         <Style x:Key="ImageGridView_DefaultItemContainerStyle"
                TargetType="GridViewItem">
             <Setter Property="Background"
-                    Value="Gray" />
+                    Value="LightGray" />
             <Setter Property="Margin"
                     Value="{StaticResource LargeItemMargin}" />
         </Style>
