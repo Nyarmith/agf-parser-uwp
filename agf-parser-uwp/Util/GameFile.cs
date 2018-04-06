@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,6 +40,40 @@ namespace agf_parser_uwp
             string createdate, string modifydate)  : 
             this(title, author,new GameFile(filename, createdate, modifydate))
         { }
+
+    }
+
+
+    public static class agfFiles
+    {
+        public static string advPath { get; } = Windows.ApplicationModel.Package.Current.InstalledLocation.Path + "\\Assets\\Adventures\\";
+
+        //Parse files until we find the right one
+
+        private static string getfname(AdventureGame ag)
+        {
+            string fileName = String.Format("{0}_{1}.json", ag.title, ag.author);
+            return advPath + fileName;
+        }
+
+        public static void addAGF(AdventureGame ag)
+        {
+            if (!isAlreadyInLib(ag))
+            {
+                AdventureGame.saveToFile(ag, getfname(ag));
+            }
+        }
+
+        public static bool isAlreadyInLib(AdventureGame ag)
+        {
+            string file_path = getfname(ag);
+            return File.Exists(file_path);
+        }
+
+        public static void removeFromLib(AdventureGame ag)
+        {
+            File.Delete(getfname(ag));
+        }
 
     }
 
