@@ -51,7 +51,7 @@
                     <TextBlock Text="{x:Bind gameRating}" 
                                Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Viewbox>
-                    <Button Click="playHandler" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                    <Button Click="playHandler" HorizontalAlignment="Center" VerticalAlignment="Bottom" Tag="{x:Bind fileName}">
                         <SymbolIcon Symbol="Play" />
                     </Button>
                 </StackPanel>

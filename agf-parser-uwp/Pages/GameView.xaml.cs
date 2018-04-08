@@ -22,9 +22,15 @@ namespace agf_parser_uwp.Pages
     /// </summary>
     public sealed partial class GameView : Page
     {
-        public GameView()
+        private ActiveGame game;
+        public GameView(ActiveGame ag)
         {
             //this.InitializeComponent();
+            game = ag;
         }
+
+        //option click handler
+
+        //menu click handler
     }
 }

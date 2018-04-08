@@ -113,7 +113,6 @@ namespace agf_parser_uwp
                 case "Creator":
                     currentPage = "Adventure-Game Studio";
                     ContentFrame.Navigate(typeof(Creator));
-                    //consider using base.OnNavigatedTo here
                     break;
             }
 

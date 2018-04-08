@@ -6,8 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -120,9 +122,35 @@ namespace agf_parser_uwp
         }
 
         //play the linked game
-        private void playHandler(object sender, RoutedEventArgs e)
+        private async void playHandler(object sender, RoutedEventArgs e)
         {
             var obj = e.OriginalSource;
+
+            //compromise: we're going to navigate in the same view, but minimize the side-bar
+            base.Frame.Navigate(typeof(GameView), e.OriginalSource);
+
+            //change the view to GameView w/ panel
+            //base.Frame.Navigate(typeof(GameView), e.OriginalSource);
+
+            /*
+            CoreApplicationView newView = CoreApplication.CreateNewView();
+
+            int newViewId = 0;
+            await newView.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                Frame frame = new Frame();
+                frame.Navigate(typeof(GameView), null);
+                Window.Current.Content = frame;
+                Window.Current.Activate();
+                newViewId = ApplicationView.GetForCurrentView().Id;
+            });
+
+            bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
+            */
+
+            // one of the following two might suffice:
+            // - base.OnNavigatedTo
+            // - this.Frame.Navigate(typeof(DetailPage), e.ClickedItem);
         }
     }
 }
