@@ -6,27 +6,62 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <DataTemplate x:Key="GameView_ChoiceTemplate"
+                      x:DataType="x:String">
+            <!--
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                -->
+            <!--<TextBlock Grid.Row="1" Grid.Column="0"-->
+            <Button Width="Auto"
+                        HorizontalAlignment="Stretch"
+                        Margin="4"
+                        Click="Option_Click">
+                <TextBlock 
+                           x:Name="OptBtn"
+                           Text="{x:Bind}"
+                           HorizontalAlignment="Center"
+                           Style="{StaticResource SubtitleTextBlockStyle}"/>
+            </Button>
+            <!--</Grid>-->
+        </DataTemplate>
+    </Page.Resources>
+
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
         <Viewbox x:Name="GameImageBox"
                  Height="200"
                  RelativePanel.AlignTopWithPanel="True">
             <Image x:Name="CurrentImage" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Viewbox>
-        <TextBox x:Name="GameDialogue"
-                 Text="Placeholder stuff pls"
+
+        <TextBlock x:Name="GameDialogue"
+                 Margin="10"
+                 Padding="8"
+                 Text="{x:Bind currentText, Mode=OneWay}"
                  TextAlignment="Center"
+                 HorizontalTextAlignment="Center"
                  RelativePanel.AlignRightWithPanel="True"
                  RelativePanel.AlignLeftWithPanel="True"
                  RelativePanel.Below="GameImageBox"
                  RelativePanel.Above="GameChoices">
-        </TextBox>
+        </TextBlock>
+
         <StackPanel x:Name="GameChoices"
                  RelativePanel.AlignBottomWithPanel="True"
                  RelativePanel.AlignLeftWithPanel="True"
                  RelativePanel.AlignRightWithPanel="True">
-            <Rectangle Fill="SkyBlue" Height="20" Margin="8,8,8,8"/>
-            <Rectangle Fill="YellowGreen" Height="20" Margin="8,8,8,8"/>
-            <Rectangle Fill="PaleVioletRed" Height="20" Margin="8,8,8,8"/>
+            <ItemsControl ItemTemplate="{StaticResource GameView_ChoiceTemplate}"
+                               ItemsSource="{x:Bind choices, Mode=OneWay}" />
         </StackPanel>
+
     </RelativePanel>
 </Page>

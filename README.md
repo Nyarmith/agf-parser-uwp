@@ -1,13 +1,15 @@
 # agf-parser-uwp
-Universal Widnows App for playing adventure games defined in the .agf format.
+Universal Windows App for playing adventure games defined in the .agf format.
 
-TODO:   
+TODO Queue:
+-Make "browse online" less laggy/make it "asynchronous"
+\-> make it usable with any api key
 - Implement import
 - Get extended file permissions
-- Make trivial game playing
-- Add google drive browsability
-- Add ability to rate (only local)
-- Add advanced browsing features and interface
-- Add ability to save and resume game
+-Make saving a game work
+-Make "open filesystem" dialog
 - add app icon
-- try using fonticons instead of symbols or otherwise fix theme from making dark folders (with bright bg at least):wq
+- Add ability to rate (only local)
+-Make basic adventure creator
+ListView seems to be the thing I want to use to emulate the file browsing
+https://stackoverflow.com/questions/37443188/c-sharp-uwp-listview-with-columns-binding-sqlite

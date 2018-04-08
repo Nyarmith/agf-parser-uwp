@@ -91,7 +91,7 @@ namespace agf_parser_uwp
                     //get file info from making an ag object
                     AdventureGame ag = AdventureGame.loadFromFile(file);
                     System.IO.FileInfo finfo = new System.IO.FileInfo(file);
-                    Games.Add(new GameInfo(ag.title, ag.author, finfo.CreationTime.ToShortDateString(),
+                    Games.Add(new GameInfo(ag.title, ag.author, file,
                         finfo.CreationTime.ToLongDateString(),
                         finfo.LastAccessTime.ToShortDateString()));
                 }
@@ -128,6 +128,7 @@ namespace agf_parser_uwp
 
             //compromise: we're going to navigate in the same view, but minimize the side-bar
             base.Frame.Navigate(typeof(GameView), e.OriginalSource);
+            //this.Frame.Navigate(typeof(GameView), e.OriginalSource);
 
             //change the view to GameView w/ panel
             //base.Frame.Navigate(typeof(GameView), e.OriginalSource);

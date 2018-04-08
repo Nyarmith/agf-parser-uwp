@@ -20,7 +20,7 @@
         ["","user::error=true","question","Oops!"]]},
 
     "answer":{"text":"it is 4!", "options":[
-        ["","","question","Ok let’s try again"]
+        ["","","question","Ok let's try again"]
       ]}
     }
 }

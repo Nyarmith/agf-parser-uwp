@@ -41,6 +41,7 @@
                     OverflowButtonVisibility="Collapsed"
                     DefaultLabelPosition="Right" d:IsHidden="True">
         </CommandBar>
+
         <Grid 
               RelativePanel.AlignBottomWithPanel="True"
               RelativePanel.AlignTopWithPanel="True"
@@ -55,10 +56,45 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
+            <!-- Top Grid: Used for Featured and Top Games-->
             <Grid Grid.Row="0">
-            </Grid>
-            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="3*" />
 
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock x:Name="FeaturedGamesBlock"
+                   Text="Featured Community Adventures"
+                   Style="{StaticResource TitleTextBlockStyle}"
+                   Margin="24,0,0,24" />
+                    <GridView x:Name="ImageGridView"
+                  ItemsSource="{x:Bind Games}"
+                  Margin="4,0,0,4"
+                  IsItemClickEnabled="False"
+                  ItemTemplate="{StaticResource netItem_Template}">
+                    </GridView>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock x:Name="TopGamesBlock"
+                   Text="Popular Adventures"
+                   Style="{StaticResource TitleTextBlockStyle}"
+                   Margin="24,0,0,24" />
+                    <ListView x:Name="TopAdventuerGames"
+                  ItemsSource="{x:Bind Games}"
+                  Margin="0,0,0,8"
+                  IsItemClickEnabled="False"
+                  ItemTemplate="{StaticResource netItem_Template}">
+                    </ListView>
+                </StackPanel>
+
+            </Grid>
+
+
+            <!-- Bottom Grid: Used for List of Games + SearchBar-->
+            <Grid Grid.Row="1">
             </Grid>
 
         </Grid>
