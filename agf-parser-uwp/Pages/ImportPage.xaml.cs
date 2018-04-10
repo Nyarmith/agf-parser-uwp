@@ -17,6 +17,7 @@ using Windows.Storage;
 using Windows.ApplicationModel;
 using System.Collections.ObjectModel;
 
+
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 //TODO: make asynchronous, get permissions to access all filesystem, implement the actual import (make it shared)
 
@@ -51,10 +52,26 @@ namespace agf_parser_uwp
             updateFiles();
         }
 
-        public void updateFiles()
+        public async void updateFiles()
         {
-            files = System.IO.Directory.GetFiles(currentPath).Select(x => last(x)).ToList();
-            folders = System.IO.Directory.GetDirectories(currentPath).Select(x => last(x)).ToList();
+            StorageFolder dir = await StorageFolder.GetFolderFromPathAsync(currentPath);
+
+
+            IReadOnlyList<StorageFile> fileList = await dir.GetFilesAsync();
+            IReadOnlyList<StorageFolder> folderList = await dir.GetFoldersAsync();
+            files = new List<string>();//System.IO.Directory.GetFiles(currentPath).Select(x => last(x)).ToList();
+            //folders = System.IO.Directory.GetDirectories(currentPath).Select(x => last(x)).ToList();
+            folders = new List<string>();//System.IO.Directory.GetDirectories(currentPath).Select(x => last(x)).ToList();
+
+            foreach (StorageFile f in fileList)
+            {
+                files.Add(last(f.Path));
+            }
+            foreach (StorageFolder f in folderList)
+            {
+                files.Add(last(f.Path));
+            }
+
             files.Sort();
             folders.Sort();
             dirObjects = new ObservableCollection<GridObj>();

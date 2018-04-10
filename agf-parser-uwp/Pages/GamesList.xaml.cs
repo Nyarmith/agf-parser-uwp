@@ -61,7 +61,7 @@ namespace agf_parser_uwp
         }
         */
 
-        private void UpdateFiles()
+        private async void UpdateFiles()
         {
             // https://docs.microsoft.com/uwp/api/windows.ui.xaml.controls.image#Windows_UI_Xaml_Controls_Image_Source
             // See "Using a stream source to show images from the Pictures library".
@@ -69,20 +69,26 @@ namespace agf_parser_uwp
 
             // Get the app folder where the images are stored.
             string folderpath = Package.Current.InstalledLocation.Path + "\\Assets\\Adventures\\";
+            StorageFolder dir = await StorageFolder.GetFolderFromPathAsync(folderpath);
 
-            string [] files = System.IO.Directory.GetFiles(folderpath);
-            foreach (string file in files)
+
+            //string [] files = System.IO.Directory.GetFiles(folderpath);
+            IReadOnlyList<StorageFile> files = await dir.GetFilesAsync();
+            foreach (StorageFile file in files)
             {
+                string fname = file.Name;
                 // Limit to only json or agf files.
-                int l = file.Length;
-                if (file.Substring(l-5) == ".json" || file.Substring(l-4) == ".agf")
+                int l = fname.Length;
+                if (fname.Substring(l-5) == ".json" || fname.Substring(l-4) == ".agf")
                 {
                     //get file info from making an ag object
-                    AdventureGame ag = AdventureGame.loadFromFile(file);
-                    System.IO.FileInfo finfo = new System.IO.FileInfo(file);
-                    Games.Add(new GameInfo(ag.title, ag.author, finfo.CreationTime.ToShortDateString(),
-                        finfo.CreationTime.ToLongDateString(),
-                        finfo.LastAccessTime.ToShortDateString()));
+                    //TODO: Add file cleaning/ ability to turn non - ascii chars into ascii(here)(prev method worked wtf)
+                    string contents = await Windows.Storage.FileIO.ReadTextAsync(file);
+                    AdventureGame ag = AdventureGame.loadFromString(contents);
+                    Games.Add(new GameInfo(ag.title, ag.author, file.Path,
+                        file.DateCreated.ToString(),
+                        file.DateCreated.ToString()));
+                    //will have to get "extended properties" via https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-getting-file-properties
                 }
             }
         }

@@ -13,3 +13,4 @@ TODO Queue:
 -Make basic adventure creator
 ListView seems to be the thing I want to use to emulate the file browsing
 https://stackoverflow.com/questions/37443188/c-sharp-uwp-listview-with-columns-binding-sqlite
+-make file browse work again
