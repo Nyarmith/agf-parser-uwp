@@ -15,7 +15,8 @@
                   VerticalAlignment="Top" Margin="25,25,0,0">
             <ComboBox x:Name="FontSize"
                       Header="Font-Size"
-                  HorizontalAlignment="Left">
+                      HorizontalAlignment="Left"
+                      SelectionChanged="FontSize_SelectionChanged">
                 <ComboBoxItem Content="Small" />
                 <ComboBoxItem Content="Medium" IsSelected="True"/>
                 <ComboBoxItem Content="Large" />
@@ -25,7 +26,8 @@
                       Header="Voice Acting"
                       HorizontalAlignment="Left"
                       Height="60"
-                      Width="154"/>
+                      Width="154"
+                      Toggled="VaToggle_Toggled"/>
 
             <!-- launch URI for my site, more info for this here: https://docs.microsoft.com/en-us/windows/uwp/launch-resume/launch-default-app -->
             <TextBlock Text="Written By Sergey Ivanov" />

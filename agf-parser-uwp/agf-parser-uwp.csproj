@@ -127,6 +127,7 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\GameFile.cs" />
+    <Compile Include="Util\GlobSetting.cs" />
     <Compile Include="Util\WebAPI.cs" />
   </ItemGroup>
   <ItemGroup>

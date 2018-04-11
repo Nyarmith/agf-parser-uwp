@@ -13,18 +13,28 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace agf_parser_uwp
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class SettingsPage : Page
     {
         public SettingsPage()
         {
             this.InitializeComponent();
+        }
+
+        private void VaToggle_Toggled(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch o = e.OriginalSource as ToggleSwitch;
+            GlobSetting g = GlobSetting.getInstance();
+            g.text_speech = o.IsOn;
+        }
+
+        private void FontSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //do a thing
+            ComboBox o = sender as ComboBox;
+            ComboBoxItem n = o.SelectedItem as ComboBoxItem;
+            // do something with n.Content;
         }
     }
 }
