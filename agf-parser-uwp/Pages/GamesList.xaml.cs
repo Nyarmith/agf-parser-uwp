@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage;
@@ -81,13 +83,14 @@ namespace agf_parser_uwp
                 int l = fname.Length;
                 if (fname.Substring(l-5) == ".json" || fname.Substring(l-4) == ".agf")
                 {
-                    //get file info from making an ag object
-                    //TODO: Add file cleaning/ ability to turn non - ascii chars into ascii(here)(prev method worked wtf)
-                    string contents = await Windows.Storage.FileIO.ReadTextAsync(file);
+                    IBuffer buffer = await FileIO.ReadBufferAsync(file);
+                    byte[] fileData = buffer.ToArray();
+                    Encoding enc = Encoding.UTF8;
+                    string contents = enc.GetString(fileData, 0, fileData.Length);
                     AdventureGame ag = AdventureGame.loadFromString(contents);
                     Games.Add(new GameInfo(ag.title, ag.author, file.Path,
-                        file.DateCreated.ToString(),
-                        file.DateCreated.ToString()));
+                        file.DateCreated.Date.ToShortDateString(),
+                        file.DateCreated.Date.ToShortTimeString() ));
                     //will have to get "extended properties" via https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-getting-file-properties
                 }
             }
