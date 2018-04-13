@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Xml;
 using AgfLang;
 using agf_parser_uwp;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace agf_parser_uwp
 {
@@ -56,7 +58,7 @@ namespace agf_parser_uwp
         public List<string> getChoices()
         {
             List<string> ret = new List<string>();   //is this valid?
-            foreach (Tuple<int,string> e in choices)
+            foreach (Tuple<int, string> e in choices)
             {
                 ret.Add(e.Item2);
             }
@@ -119,12 +121,12 @@ namespace agf_parser_uwp
         {
             List<List<string>> ch = newState.options;
             choices = new List<Tuple<int, string>>();
-            for (int i=0; i<ch.Count; ++i)
+            for (int i = 0; i < ch.Count; ++i)
             {
                 List<string> c = ch[i];
                 if (c[0] == "" || evalStmt(c[0]) != 0)
                 {
-                    choices.Add( new Tuple<int, string>(i, c.Last()) );
+                    choices.Add(new Tuple<int, string>(i, c.Last()));
                 }
             }
         }
@@ -133,7 +135,7 @@ namespace agf_parser_uwp
         {
             //process text based on env states
             XmlDocument xml = new XmlDocument();
-            xml.LoadXml("<base>"+newState.text+"</base>");
+            xml.LoadXml("<base>" + newState.text + "</base>");
             //parseXML(xml.GetElementsByTagName("base")[0]);
             text = parseXML(xml.DocumentElement);
         }
@@ -152,7 +154,7 @@ namespace agf_parser_uwp
                         break;
                     case "cond":
                         XmlAttributeCollection col = e.Attributes;
-                        XmlAttribute a =(XmlAttribute)col.GetNamedItem("expr");
+                        XmlAttribute a = (XmlAttribute)col.GetNamedItem("expr");
                         if (evalStmt(a.Value) != 0)
                             ret += parseXML(e);
                         break;
@@ -161,6 +163,39 @@ namespace agf_parser_uwp
                 }
             }
             return ret;
+        }
+        public static AdventureGame loadFromFile(string path)
+        {
+            if (!File.Exists(path))
+            {
+                throw new Exception("Error, no file found at path: " + path);
+            }
+            string contents = "";
+            contents = File.ReadAllText(path);
+
+            return loadFromString(contents);
+        }
+
+        public static AdventureGame saveToFile(AdventureGame game, string path)
+        {
+            if (!File.Exists(path))
+            {
+                string contents = saveToString(game);
+                File.WriteAllText(path, contents);
+            }
+            throw new Exception("File already exists: " + path);
+        }
+
+        public static AdventureGame loadFromString(string json_str)
+        {
+            AdventureGame ag = JsonConvert.DeserializeObject<AdventureGame>(json_str);
+            return ag;
+        }
+
+        public static string saveToString(AdventureGame adv_obj)
+        {
+            string ser = JsonConvert.SerializeObject(adv_obj);
+            return ser;
         }
     }
 }

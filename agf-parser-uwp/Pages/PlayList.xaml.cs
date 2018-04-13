@@ -154,4 +154,5 @@ namespace agf_parser_uwp
             // - this.Frame.Navigate(typeof(DetailPage), e.ClickedItem);
         }
     }
+
 }

@@ -141,6 +141,9 @@
     <Content Include="Assets\Adventures\fodder4.json" />
     <Content Include="Assets\Adventures\fodder3.json" />
     <Content Include="Assets\Adventures\UIIpsum.json" />
+    <Content Include="Assets\Saves\placeholder.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="client_secrets.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
