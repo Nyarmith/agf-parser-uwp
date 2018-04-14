@@ -7,7 +7,30 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <!-- TODO: Add templates here-->
+
+    <Page.Resources>
+        <DataTemplate x:Key="ResumePage_DefaultItemTemplate"
+                      x:DataType="local:SaveGameInfo">
+            <Grid Height="120" Width="200" Margin="8"
+                            VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="1"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Margin="8">
+                    <Viewbox Stretch="Uniform" Height="50" Width="176" >
+                        <TextBlock Width="176" TextWrapping="Wrap" Text="{x:Bind title}" />
+                    </Viewbox>
+                    <TextBlock Width="176" TextWrapping="Wrap" Text="{x:Bind author}" />
+                    <TextBlock Width="176" TextWrapping="Wrap" Text="{x:Bind saveDate}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock x:Name="TitleTextBlock"
@@ -22,13 +45,14 @@
                     DefaultLabelPosition="Right" d:IsHidden="True">
         </CommandBar>
 
-        <GridView x:Name="ImageGridView"
-                  ItemsSource="In Progress Games"
+        <GridView x:Name="ResumeGridView"
+                  ItemsSource="{x:Bind Games}"
                   Margin="0,0,0,8"
                   IsItemClickEnabled="True"
                   RelativePanel.AlignLeftWithPanel="True"
                   RelativePanel.AlignRightWithPanel="True"
-                  RelativePanel.Below="TitleTextBlock">
+                  RelativePanel.Below="TitleTextBlock"
+                  ItemTemplate="{StaticResource ResumePage_DefaultItemTemplate}">
 
             <!--Loaded="{x:Bind StartConnectedAnimationForBackNavigation}"
                   ItemsPanel="{StaticResource ImageGridView_ItemsPanelTemplate}"

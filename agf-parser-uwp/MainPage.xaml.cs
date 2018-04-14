@@ -26,6 +26,7 @@ namespace agf_parser_uwp
         public MainPage()
         {
             this.InitializeComponent();
+            UWPIO.initLocalOnStartupAsync();
             updateTitle();
         }
 

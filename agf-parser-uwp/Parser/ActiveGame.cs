@@ -15,22 +15,26 @@ namespace agf_parser_uwp
 
     public class ActiveGame
     {
+        [JsonProperty]
         private AdventureGame data;
+        [JsonProperty]
         private string position;
+        [JsonProperty]
         private List<Tuple<int, string>> choices = new List<Tuple<int, string>>();   //[transition_id, transition_text], options after pruning
-        private Dictionary<string, Dictionary<string, int>> states = new Dictionary<string, Dictionary<string, int>>();
-
+        [JsonProperty]
+        private Dictionary<string, Dictionary<string, int>> states = new Dictionary<string, Dictionary<string, int>>(); 
+        [JsonProperty]
         private AgfLang.AgfInterpreter interp;
+        [JsonProperty]
         private string text;  //after processing
 
         public ActiveGame(AdventureGame adventure_)
         {
             data = adventure_;
             interp = new AgfInterpreter(ref states);
-            start();
         }
 
-        private void start()
+        public void start()
         {
             //set initial position and process text based on state
             position = data.start_state;
@@ -164,38 +168,16 @@ namespace agf_parser_uwp
             }
             return ret;
         }
-        public static AdventureGame loadFromFile(string path)
-        {
-            if (!File.Exists(path))
-            {
-                throw new Exception("Error, no file found at path: " + path);
-            }
-            string contents = "";
-            contents = File.ReadAllText(path);
 
-            return loadFromString(contents);
+        public string getTitle()
+        {
+            return data.title;
         }
 
-        public static AdventureGame saveToFile(AdventureGame game, string path)
+        public string getAuthor()
         {
-            if (!File.Exists(path))
-            {
-                string contents = saveToString(game);
-                File.WriteAllText(path, contents);
-            }
-            throw new Exception("File already exists: " + path);
+            return data.author;
         }
 
-        public static AdventureGame loadFromString(string json_str)
-        {
-            AdventureGame ag = JsonConvert.DeserializeObject<AdventureGame>(json_str);
-            return ag;
-        }
-
-        public static string saveToString(AdventureGame adv_obj)
-        {
-            string ser = JsonConvert.SerializeObject(adv_obj);
-            return ser;
-        }
     }
 }

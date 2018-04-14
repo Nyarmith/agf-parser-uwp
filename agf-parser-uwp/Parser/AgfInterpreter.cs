@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace AgfLang
 {
@@ -704,7 +705,9 @@ namespace AgfLang
 
     public class AgfInterpreter
     {
+        [JsonProperty]
         private Interpreter interpreter;
+        [JsonProperty]
         private Dictionary<string, Dictionary<string, int>> mem_copy;
 
         public AgfInterpreter(ref Dictionary<string, Dictionary<string, int>> internal_mem)

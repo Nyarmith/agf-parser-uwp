@@ -7,43 +7,118 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+
+    <!--
     <Page.Resources>
-        <DataTemplate x:Key="ImportPage_fsObjTemplate"
-                  x:DataType="local:GridObj">
+        <DataTemplate x:Key="ImportPage_leftScreenTemplate"
+                      x:DataType="local:PreviewType">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Vertical" Grid.Row="1">
-                    <TextBlock Text="{x:Bind name}"/>
-                    <SymbolIcon Symbol="{x:Bind icon}" />
-                </StackPanel>
+                <TextBox Grid.Column="0" Grid.Row="0" Text="Title: " />
+                <Viewbox Grid.Column="1" Grid.Row="0"
+                         Height="10" Stretch="Uniform">
+                    <TextBlock Text="{x:Bind title}" />
+                </Viewbox>
+                <TextBox Grid.Column="0" Grid.Row="1" Text="Author: " />
+                <Viewbox Grid.Column="1" Grid.Row="1"
+                         Height="10" Stretch="Uniform">
+                    <TextBlock Text="{x:Bind author}" />
+                </Viewbox>
+                <TextBox Grid.Column="0" Grid.Row="2" Text="Vars: " />
+                <Viewbox Grid.Column="1" Grid.Row="2"
+                         Height="10" Stretch="Uniform">
+                    <TextBlock Text="{x:Bind gamevars}" />
+                </Viewbox>
+                <TextBox Grid.Column="0" Grid.Row="3" Text="Start: " />
+                <Viewbox Grid.Column="1" Grid.Row="3"
+                         Height="10" Stretch="Uniform">
+                    <TextBlock Text="{x:Bind start_state}" />
+                </Viewbox>
             </Grid>
         </DataTemplate>
     </Page.Resources>
+    -->
 
-    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel x:Name="pathPanel"
-                    RelativePanel.AlignTopWithPanel="True"
-                    RelativePanel.AlignLeftWithPanel="True"
-                    RelativePanel.AlignRightWithPanel="True"
-                    Background="{StaticResource AppBarItemDisabledForegroundThemeBrush}">
-            <TextBlock Text="{x:Bind currentPath, Mode=OneWay}"
-                       Style="{StaticResource BodyTextBlockStyle}"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"/>
-        </StackPanel>
-        <GridView x:Name="FileList"
-                  RelativePanel.Below="pathPanel"
-                  ItemsSource="{x:Bind dirObjects, Mode=OneWay}"
-                  ItemClick="FileList_ItemClick"
-                  IsItemClickEnabled="True"
-                  RelativePanel.AlignLeftWithPanel="True"
-                  RelativePanel.AlignRightWithPanel="True"
-                  RelativePanel.AlignBottomWithPanel="True"
-                  ItemTemplate="{StaticResource ImportPage_fsObjTemplate}">
-        </GridView>
+
+    <RelativePanel
+        Background="{StaticResource AppBarBackgroundThemeBrush}">
+        <Grid Height="Auto" Width="Auto" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+
+            <!--Left Side-->
+
+            <Button x:Name="ImportButton"
+                    Grid.Row="0" Grid.Column="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Margin="10"
+                    Click="ImportButton_Click">
+                <TextBlock Text="Import Adventure File" 
+                           Style="{StaticResource HeaderTextBlockStyle}"/>
+            </Button>
+
+            <StackPanel Grid.Row ="1" Grid.Column="0"
+                          Margin="10" Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="Title: " TextWrapping="Wrap"/>
+                        <TextBlock Text="{x:Bind title, Mode=OneWay}"
+                                   Style="{StaticResource SubtitleTextBlockStyle}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="Auth: " TextWrapping="Wrap"/>
+                        <TextBlock Text="{x:Bind author, Mode=OneWay}"
+                                   Style="{StaticResource SubtitleTextBlockStyle}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="Vars: " TextWrapping="Wrap"/>
+                        <TextBlock Text="{x:Bind gamevars, Mode=OneWay}"
+                                   Style="{StaticResource SubtitleTextBlockStyle}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="Start: " TextWrapping="Wrap"/>
+                    <TextBlock Text="{x:Bind start_state, Mode=OneWay}"
+                               Style="{StaticResource SubtitleTextBlockStyle}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!--Right Side-->
+
+            <TextBox Grid.Row="0" Grid.Column="1"
+                     Margin="10"
+                     TextWrapping="Wrap"
+                     x:Name="fileSpew"
+                     Text="{x:Bind fileContents, Mode=OneWay}"
+                     IsReadOnly="True">
+            </TextBox>
+
+            <Button x:Name="ConfirmationButton"
+                    Visibility="Collapsed"
+                    Grid.Row="1" Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Margin="10"
+                    Click="ConfirmationButton_Click">
+                <TextBlock x:Name="ConfirmationButtonText" Text="Confirm Import" 
+                           Style="{StaticResource HeaderTextBlockStyle}"/>
+            </Button>
+        </Grid>
     </RelativePanel>
 </Page>

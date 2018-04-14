@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -72,30 +73,41 @@ namespace agf_parser_uwp
 
         //when a dude is clicked on a play button should appear, and when they're unclicked it should disappear
 
-        private void UpdateFiles()
+        private async void UpdateFiles()
         {
-            // https://docs.microsoft.com/uwp/api/windows.ui.xaml.controls.image#Windows_UI_Xaml_Controls_Image_Source
-            // See "Using a stream source to show images from the Pictures library".
-            // This code is modified to get images from the app folder.
 
-            // Get the app folder where the images are stored.
-            string folderpath = Package.Current.InstalledLocation.Path + "\\Assets\\Adventures\\";
-
-            string[] files = System.IO.Directory.GetFiles(folderpath);
+            List<string> files = await UWPIO.listFiles(UWPIO.GAMEDIR);
             foreach (string file in files)
             {
                 // Limit to only json or agf files.
                 int l = file.Length;
                 if (file.Substring(l - 5) == ".json" || file.Substring(l - 4) == ".agf")
                 {
-                    //get file info from making an ag object
-                    AdventureGame ag = AdventureGame.loadFromFile(file);
-                    System.IO.FileInfo finfo = new System.IO.FileInfo(file);
+                    string fname = UWPIO.GAMEDIR + "\\" + file;
+                    AdventureGame ag = AdventureGame.loadFromString(await UWPIO.readFile(fname));
                     Games.Add(new GameInfo(ag.title, ag.author, file,
-                        finfo.CreationTime.ToLongDateString(),
-                        finfo.LastAccessTime.ToShortDateString()));
+                        await UWPIO.dateCreatedAsync(fname),
+                        await UWPIO.dateModifiedAsync(fname) ));
                 }
             }
+        }
+
+        public static ActiveGame loadFromString(string json_str)
+        {
+            ActiveGame ag = JsonConvert.DeserializeObject<ActiveGame>(json_str);
+            return ag;
+        }
+
+        public static ActiveGame loadFromFile(string path)
+        {
+            if (!File.Exists(path))
+            {
+                throw new Exception("Error, no file found at path: " + path);
+            }
+            string contents = "";
+            contents = File.ReadAllText(path);
+
+            return loadFromString(contents);
         }
 
         //undo current selection, bring that item's display back to normal
@@ -128,30 +140,6 @@ namespace agf_parser_uwp
 
             //compromise: we're going to navigate in the same view, but minimize the side-bar
             base.Frame.Navigate(typeof(GameView), e.OriginalSource);
-            //this.Frame.Navigate(typeof(GameView), e.OriginalSource);
-
-            //change the view to GameView w/ panel
-            //base.Frame.Navigate(typeof(GameView), e.OriginalSource);
-
-            /*
-            CoreApplicationView newView = CoreApplication.CreateNewView();
-
-            int newViewId = 0;
-            await newView.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            {
-                Frame frame = new Frame();
-                frame.Navigate(typeof(GameView), null);
-                Window.Current.Content = frame;
-                Window.Current.Activate();
-                newViewId = ApplicationView.GetForCurrentView().Id;
-            });
-
-            bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
-            */
-
-            // one of the following two might suffice:
-            // - base.OnNavigatedTo
-            // - this.Frame.Navigate(typeof(DetailPage), e.ClickedItem);
         }
     }
 

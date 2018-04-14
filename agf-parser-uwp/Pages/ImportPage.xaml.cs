@@ -16,6 +16,9 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Storage;
 using Windows.ApplicationModel;
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
+using Windows.Storage.Pickers;
+using Windows.UI.Popups;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -23,111 +26,42 @@ using System.Collections.ObjectModel;
 
 namespace agf_parser_uwp
 {
-    //individual item being listed in the grid
-    public class GridObj
-    {
-        public string name;
-        public string icon;
-        public GridObj(string name_, string icon_)
-        {
-            name = name_;
-            icon = icon_;
-        }
-    }
+
 
     public sealed partial class ImportPage : Page, INotifyPropertyChanged
     {
-        public string currentPath;
-        public  ObservableCollection<GridObj> dirObjects = new ObservableCollection<GridObj>();
-
-        private List<string> folders;
-        private List<string> files;
+        public string currentPath = "";
+        public AdventureGame loadedGame = null;
+        public StorageFile curFile = null;
+        public string fileContents = "";
+        public string title="N/A";
+        public string author="N/A";
+        public string gamevars="N/A";
+        public string start_state="N/A";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ImportPage()
         {
             this.InitializeComponent();
-            currentPath = Package.Current.InstalledLocation.Path;
-            updateFiles();
+            currentPath = null;
+            updateDisplay();
         }
 
-        public async void updateFiles()
+        //make click handler to open file dialog
+
+        public void updateDisplay()
         {
-            StorageFolder dir = await StorageFolder.GetFolderFromPathAsync(currentPath);
+            if (curFile == null)
+                return;
 
+            ConfirmationButton.Visibility = Visibility.Visible;
 
-            IReadOnlyList<StorageFile> fileList = await dir.GetFilesAsync();
-            IReadOnlyList<StorageFolder> folderList = await dir.GetFoldersAsync();
-            files = new List<string>();//System.IO.Directory.GetFiles(currentPath).Select(x => last(x)).ToList();
-            //folders = System.IO.Directory.GetDirectories(currentPath).Select(x => last(x)).ToList();
-            folders = new List<string>();//System.IO.Directory.GetDirectories(currentPath).Select(x => last(x)).ToList();
-
-            foreach (StorageFile f in fileList)
-            {
-                files.Add(last(f.Path));
-            }
-            foreach (StorageFolder f in folderList)
-            {
-                files.Add(last(f.Path));
-            }
-
-            files.Sort();
-            folders.Sort();
-            dirObjects = new ObservableCollection<GridObj>();
-
-            dirObjects.Add(new GridObj("..", "MoveToFolder"));
-
-            foreach (string folder in folders)
-            {
-                dirObjects.Add(new GridObj(folder, "Folder"));
-            }
-
-            folders.Add("..");
-
-            foreach (string file in files)
-            {
-                dirObjects.Add(new GridObj(file, "Page"));
-            }
-
-            //PropertyChanged(this, new PropertyChangedEventArgs(nameof(dirObjects)));
-            updateProperty(nameof(dirObjects));
-        }
-
-        public void chdir(string dirName)
-        {
-            if (dirName == "..")
-            {
-                currentPath = init(currentPath);
-                updateProperty(nameof(currentPath));
-                updateFiles();
-            }
-            else if (folders.Contains(dirName))
-            {
-                currentPath = currentPath + "\\" + dirName;
-                updateProperty(nameof(currentPath));
-                updateFiles();
-            }
-            else
-                throw new Exception("non-dir passed to chdir");
-        }
-
-        //handle a click
-        private void FileList_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            GridObj go = e.ClickedItem as GridObj;
-            string item = go.name;
-            if (folders.Contains(item))
-                chdir(item);
-            else if (files.Contains(item))
-                openDetails(item);
-            else
-                throw new Exception("somehow got an item not in files or folders");
-        }
-
-        private void openDetails(string item)
-        {
-            //I'd like this to expand the thing to the right, with more details
+            updateProperty(nameof(fileContents));
+            updateProperty(nameof(title));
+            updateProperty(nameof(author));
+            updateProperty(nameof(gamevars));
+            updateProperty(nameof(start_state));
         }
 
         private void updateProperty(string name)
@@ -136,15 +70,60 @@ namespace agf_parser_uwp
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
 
-        private static string init(string fpath)
+        private async void ImportButton_Click(object sender, RoutedEventArgs e)
         {
-            string[] s = fpath.Split('\\');
-            return String.Join("\\", s, 0, s.Length - 1);
+            //open up windows dialog to pick file
+            FileOpenPicker picker = new FileOpenPicker();
+            picker.FileTypeFilter.Add(".json");
+            picker.FileTypeFilter.Add(".agf");
+            picker.ViewMode = PickerViewMode.List;
+
+            StorageFile file = await picker.PickSingleFileAsync();
+
+            if (file == null)
+                return;
+
+
+            string contents = "";
+            try
+            {
+                contents = await UWPIO.storageFileToString(file);
+                loadedGame = AdventureGame.loadFromString(contents);
+            } catch(Exception x)
+            {
+                await new MessageDialog("Invalid Adventuregame Selected", "Error").ShowAsync();
+                return;
+            }
+
+            title = loadedGame.title;
+            author = loadedGame.author;
+            gamevars = loadedGame.gamevars.ToString();
+            start_state = loadedGame.start_state;
+
+            fileContents = contents;
+            currentPath = file.Path;
+            curFile = file;
+
+            updateDisplay();
         }
-        private static string last(string fpath)
+
+        private async void ConfirmationButton_Click(object sender, RoutedEventArgs e)
         {
-            string[] s = fpath.Split('\\');
-            return s[s.Length - 1];
+            await UWPIO.createFile(UWPIO.GAMEDIR + "\\" + curFile.Name, fileContents);
+
+            //do some notification to let the user know it happened
+            ConfirmationButton.IsEnabled = false;
+            ConfirmationButtonText.Text = "Success!";
+
+            Regex rgx = new Regex(@"\b\w+\b");
+            fileContents = rgx.Replace(fileContents, "Success!");
+
+            title = "Success!";
+            author = "Success!";
+            gamevars = "Success!";
+            start_state = "Success!";
+
+            updateDisplay();
         }
     }
 }

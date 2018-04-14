@@ -33,10 +33,6 @@ namespace agf_parser_uwp
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
                 AppViewBackButtonVisibility.Collapsed;
 
-            // Remove this when replaced with XAML bindings
-            // Replaced with XAML binding
-            // ImageGridView.ItemsSource = Images;
-
             if (Games.Count == 0)
             {
                 UpdateFiles();
@@ -45,66 +41,32 @@ namespace agf_parser_uwp
             base.OnNavigatedTo(e);
         }
 
-        /*
-        //TODO: Implement this
-        // Called by the Loaded event of the ImageGridView.
-        private async void StartConnectedAnimationForBackNavigation()
-        {
-            // Run the connected animation for navigation back to the main page from the detail page.
-            if (persistedItem != null)
-            {
-                ImageGridView.ScrollIntoView(persistedItem);
-                ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
-                if (animation != null)
-                {
-                    await ImageGridView.TryStartConnectedAnimationAsync(animation, persistedItem, "ItemImage");
-                }
-            }
-        }
-        */
-
         private async void UpdateFiles()
         {
-            // https://docs.microsoft.com/uwp/api/windows.ui.xaml.controls.image#Windows_UI_Xaml_Controls_Image_Source
-            // See "Using a stream source to show images from the Pictures library".
-            // This code is modified to get images from the app folder.
+            List<string> files = await UWPIO.listFiles(UWPIO.GAMEDIR);
 
-            // Get the app folder where the images are stored.
-            string folderpath = Package.Current.InstalledLocation.Path + "\\Assets\\Adventures\\";
-            StorageFolder dir = await StorageFolder.GetFolderFromPathAsync(folderpath);
-
-
-            //string [] files = System.IO.Directory.GetFiles(folderpath);
-            IReadOnlyList<StorageFile> files = await dir.GetFilesAsync();
-            foreach (StorageFile file in files)
+            foreach (string file in files)
             {
-                string fname = file.Name;
-                // Limit to only json or agf files.
-                int l = fname.Length;
-                if (fname.Substring(l-5) == ".json" || fname.Substring(l-4) == ".agf")
+                int l = file.Length;
+                if (file.Substring(l-5) == ".json" || file.Substring(l-4) == ".agf")
                 {
-                    IBuffer buffer = await FileIO.ReadBufferAsync(file);
-                    byte[] fileData = buffer.ToArray();
-                    Encoding enc = Encoding.UTF8;
-                    string contents = enc.GetString(fileData, 0, fileData.Length);
+                    string fname = UWPIO.GAMEDIR + "\\" + file;
+                    string contents = await UWPIO.readFile(fname);
                     AdventureGame ag = AdventureGame.loadFromString(contents);
-                    Games.Add(new GameInfo(ag.title, ag.author, file.Path,
-                        file.DateCreated.Date.ToShortDateString(),
-                        file.DateCreated.Date.ToShortTimeString() ));
-                    //will have to get "extended properties" via https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-getting-file-properties
+                    Games.Add(new GameInfo(ag.title, ag.author, file,
+                        await UWPIO.dateCreatedAsync(fname),
+                        await UWPIO.dateModifiedAsync(fname)));
                 }
             }
         }
 
         private void FitScreenToggle_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-
         }
 
         private void ImageGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            //this.Frame.Navigate(typeof(DetailPage), e.ClickedItem);
-            //do a thing
+            //TODO: details
         }
 
         private void DetermineItemSize()
