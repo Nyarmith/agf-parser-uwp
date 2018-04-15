@@ -12,7 +12,8 @@
         <DataTemplate x:Key="ResumePage_DefaultItemTemplate"
                       x:DataType="local:SaveGameInfo">
             <Grid Height="120" Width="200" Margin="8"
-                            VerticalAlignment="Top" HorizontalAlignment="Left" >
+                  VerticalAlignment="Top" HorizontalAlignment="Left" 
+                  Background="LightGray">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -52,6 +53,7 @@
                   RelativePanel.AlignLeftWithPanel="True"
                   RelativePanel.AlignRightWithPanel="True"
                   RelativePanel.Below="TitleTextBlock"
+                  ItemClick="ResumeGridView_ItemClick"
                   ItemTemplate="{StaticResource ResumePage_DefaultItemTemplate}">
 
             <!--Loaded="{x:Bind StartConnectedAnimationForBackNavigation}"

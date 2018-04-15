@@ -42,14 +42,23 @@ namespace agf_parser_uwp
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             //depending on who entered, we do different things
-            //load activeGame
-            dynamic btn = e.Parameter;
-            string file_path = btn.Tag;
-            AdventureGame ag = AdventureGame.loadFromString(await UWPIO.readFile(UWPIO.GAMEDIR + "\\" + file_path));
-            game = new ActiveGame(ag);
-            game.start();
+            dynamic g = e.Parameter;
 
-            base.OnNavigatedTo(e); //idk what this does
+            if (g is ActiveGame)
+            {
+                game = g;
+            }
+            else
+            {
+                //load from path
+                dynamic btn = e.Parameter;
+                string file_path = btn.Tag;
+                AdventureGame ag = AdventureGame.loadFromString(await UWPIO.readFile(UWPIO.GAMEDIR + "\\" + file_path));
+                game = new ActiveGame(ag);
+                game.start();
+            }
+
+            base.OnNavigatedTo(e);
 
             refresh();
         }

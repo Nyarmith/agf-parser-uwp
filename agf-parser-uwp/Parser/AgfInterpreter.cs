@@ -12,7 +12,7 @@ namespace AgfLang
     public enum Tokens { SEMI, EQ, PEQ, SEQ, MEQ, DEQ, OR, AND, GT, GEQ, LT, LEQ,
                          ISEQ, NEQ, PLUS, MINUS, MUL, DIV, LPAREN, RPAREN, ID, INT, EOF };
 
-    class Token
+    public class Token
     {
         public Tokens type;
         public string value;
@@ -22,8 +22,8 @@ namespace AgfLang
     }
 
     //visitor pattern
-    interface Visitable   { string accept(NodeVisitor visitor); }
-    interface NodeVisitor
+    public interface Visitable   { string accept(NodeVisitor visitor); }
+    public interface NodeVisitor
     {
         string visit(AST node);
         string visit(BinOp node);
@@ -37,7 +37,7 @@ namespace AgfLang
     //========================
     //==== AST Node Types ====
     //========================
-    class AST : Visitable
+    public class AST : Visitable
     {
         public Token token;
         public AST() { }
@@ -45,7 +45,7 @@ namespace AgfLang
         public virtual string accept(NodeVisitor visitor) { return visitor.visit(this); }
     }
 
-    class BinOp : AST
+    public class BinOp : AST
     {
         public AST left, right;
         public BinOp(AST left_, Token op_, AST right_)
@@ -60,7 +60,7 @@ namespace AgfLang
         }
     }
 
-    class UnOp : AST
+    public class UnOp : AST
     {
         public AST value;
         public UnOp(Token op_, AST value_)
@@ -74,7 +74,7 @@ namespace AgfLang
         }
     }
 
-    class Var : AST
+    public class Var : AST
     {
         public Var(Token token_) : base(token_) { }
         public override string accept(NodeVisitor visitor)
@@ -83,7 +83,7 @@ namespace AgfLang
         }
     }
 
-    class Int : AST
+    public class Int : AST
     {
         public Int(Token token_) : base(token_) { }
         public override string accept(NodeVisitor visitor)
@@ -92,7 +92,7 @@ namespace AgfLang
         }
     }
 
-    class Assign : AST
+    public class Assign : AST
     {
         public Var left;
         public AST right;
@@ -108,7 +108,7 @@ namespace AgfLang
         }
     }
 
-    class Compound : AST
+    public class Compound : AST
     {
         public List<AST> children = new List<AST>();
         public override string accept(NodeVisitor visitor)
@@ -120,7 +120,7 @@ namespace AgfLang
     //========================
     //====Lexer Definition====
     //========================
-    class Lexer
+    public class Lexer
     {
         string text;
         int position;
@@ -358,7 +358,7 @@ namespace AgfLang
      * factor          =  LPAREN orexpr RPAREN | ID | INT | NEG factor
      */
 
-    class Parser
+    public class Parser
     {
         Lexer lexer;
         Token current_token;
@@ -536,8 +536,9 @@ namespace AgfLang
     //==============================
     //====Interpreter Definition====
     //==============================
-    class Interpreter : NodeVisitor
+    public class Interpreter : NodeVisitor
     {
+        [JsonProperty]
         private Dictionary<String, Dictionary<String, int>> states;
         private Lexer lexer;
         private Parser parser;
@@ -706,9 +707,9 @@ namespace AgfLang
     public class AgfInterpreter
     {
         [JsonProperty]
-        private Interpreter interpreter;
+        public Interpreter interpreter;
         [JsonProperty]
-        private Dictionary<string, Dictionary<string, int>> mem_copy;
+        public Dictionary<string, Dictionary<string, int>> mem_copy;
 
         public AgfInterpreter(ref Dictionary<string, Dictionary<string, int>> internal_mem)
         {

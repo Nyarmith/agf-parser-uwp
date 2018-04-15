@@ -16,17 +16,17 @@ namespace agf_parser_uwp
     public class ActiveGame
     {
         [JsonProperty]
-        private AdventureGame data;
+        public AdventureGame data;
         [JsonProperty]
-        private string position;
+        public string position;
         [JsonProperty]
-        private List<Tuple<int, string>> choices = new List<Tuple<int, string>>();   //[transition_id, transition_text], options after pruning
+        public List<Tuple<int, string>> choices = new List<Tuple<int, string>>();   //[transition_id, transition_text], options after pruning
         [JsonProperty]
-        private Dictionary<string, Dictionary<string, int>> states = new Dictionary<string, Dictionary<string, int>>(); 
+        public Dictionary<string, Dictionary<string, int>> states = new Dictionary<string, Dictionary<string, int>>(); 
         [JsonProperty]
-        private AgfLang.AgfInterpreter interp;
+        public AgfLang.AgfInterpreter interp;
         [JsonProperty]
-        private string text;  //after processing
+        public string text;  //after processing
 
         public ActiveGame(AdventureGame adventure_)
         {

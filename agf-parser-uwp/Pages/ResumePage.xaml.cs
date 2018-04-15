@@ -28,12 +28,14 @@ namespace agf_parser_uwp
         public string title;
         public string author;
         public string saveDate;
+        public ActiveGame gameRef; //reference to game for GameView passing
         public SaveGameInfo() { }
-        public SaveGameInfo(string title_, string author_, string saveDate_)
+        public SaveGameInfo(string title_, string author_, string saveDate_, ActiveGame gameref_)
         {
             title    = title_;
             author   = author_;
             saveDate = saveDate_;
+            gameRef = gameref_;
         }
     }
 
@@ -83,7 +85,7 @@ namespace agf_parser_uwp
                     ActiveGame ag = loadFromString(content);
 
                     Games.Add(new SaveGameInfo(ag.getTitle(), ag.getAuthor(),
-                        await UWPIO.dateModifiedAsync(fname)) );
+                        await UWPIO.dateModifiedAsync(fname), ag ));
                 }
             }
 
@@ -94,6 +96,12 @@ namespace agf_parser_uwp
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
+
+        private void ResumeGridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            SaveGameInfo g = e.ClickedItem as SaveGameInfo;
+            this.Frame.Navigate(typeof(GameView), g.gameRef);
         }
     }
 }
