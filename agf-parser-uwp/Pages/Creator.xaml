@@ -8,10 +8,65 @@
     mc:Ignorable="d">
 
 
-    <SplitView HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="320" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <SplitView.Pane>
-            <Grid/>
-        </SplitView.Pane>
-        <Grid/>
-    </SplitView>
+    <Page.Resources>
+        <!--DataTemplate for transitions on vertical scrollviewer-->
+        <DataTemplate x:Name="Creator_TransitionTemplateDefault"
+                      x:DataType="local:TRANSITION_TYPE">
+            <StackPanel Orientation="Vertical">
+                <Button Name="nextState">
+                </Button>
+                <!-- make this a togglable click where the text temporarily expands -->
+                <TextBlock Name="choiceText" Text="{x:Bind REPLACE}">
+                </TextBlock>
+                <TextBlock Name="Condition" Text="{x:Bind REPLACE}">
+                </TextBlock>
+                <TextBlock Name="Triggers" Text="{x:Bind REPLACE}">
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+
+        <!--DataTemplate for states on horizontal scrollviewer-->
+        <DataTemplate x:Name="Creator_StateTemplateDefault"
+                      x:DataType="local:STATE_TYPE">
+            <Button Name="State">
+                <TextBlock Name="stateText" Text="{x:Bind REPLACEWITHTEXT}">
+                </TextBlock>
+            </Button>
+        </DataTemplate>
+    </Page.Resources>
+
+
+    <RelativePanel Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+
+        <!-- make source for this vertical stackpanel the current state's transitions list -->
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Horizontal">
+                <ItemsControl x:Name="ItemsControl_Transitions"
+                              ItemTemplate="{StaticResource Creator_TransitionTemplateDefault}"
+                              ItemsSource="{x:Bind REPLACETHIS}">
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- make source for this horzontal stackpanel the states list -->
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <StackPanel Orientation="Horizontal">
+                <ItemsControl x:Name="ItemsControl_States"
+                              ItemTemplate="{StaticResource Creator_StateTemplateDefault}"
+                              ItemsSource="{x:Bind REPLACETHIS}">
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+        
+        <CommandBar RelativePanel.AlignBottomWithPanel="True"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True" DefaultLabelPosition="Right">
+            <AppBarButton Icon="List" Label="Edit Adventure Properties" HorizontalAlignment="Left" />
+            <AppBarSeparator />
+            <AppBarButton Icon="Save" Label="Save" />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="OpenFile" Label="Edit Adventure"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </RelativePanel>
 </Page>
