@@ -22,8 +22,8 @@ namespace agf_parser_uwp
     /// </summary>
     public sealed partial class Creator : Page
     {
-        private AdventureGame ag;
 
+        //Inner Class
         public class StateSelector : DataTemplateSelector
         {
             public DataTemplate DefaultTemplate { get; set; }
@@ -48,6 +48,8 @@ namespace agf_parser_uwp
                 return DefaultTemplate;
             }
         }
+
+        private AdventureGame ag;
 
         public Creator()
         {
