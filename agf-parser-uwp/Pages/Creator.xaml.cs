@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
@@ -13,19 +15,22 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace agf_parser_uwp
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
+
+    // TODO: add on-transiton function that lets you pass an activegame or adventuregame
+    // TODO: add arrow to the right of the transitions so you can follow them
+    // TODO: add visual indicator for when transition requirements not met and trying to transition(2nd click to force)
+    // TODO: add import functionality for this editor
+    // TODO: make save pop up a filepicker dialogue to create a file
+
     public sealed partial class Creator : Page
     {
 
+        public Dictionary<string, Dictionary<string, Object>> myVars = new Dictionary<string, Dictionary<string, Object>>();
         public List<List<string>> binderTest = new List<List<string>>();
         public List<string> stateText = new List<string>();
-        public string curTxt = "<b> main text my dude</b>";
+        public string curTxt = "<b> main text my dude </b>";
         public Creator()
         {
             binderTest.Add(new List<string>());
@@ -43,6 +48,14 @@ namespace agf_parser_uwp
                 lst.Add("4frth" + a);
                 a += "1";
             }
+
+            myVars["ayy"] = new Dictionary<string, Object>();
+            myVars["ayy"]["lmao"] = 23;
+            myVars["ayy"]["nowow"] = 44;
+
+            myVars["wow"] = new Dictionary<string, Object>();
+            myVars["wow"]["pls"] = 0;
+
             this.InitializeComponent();
         }
 
@@ -52,6 +65,31 @@ namespace agf_parser_uwp
         }
 
         private void addState_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void editProperties_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void saveAdventure_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void importEdit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void stateBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void runTransition_Click(object sender, RoutedEventArgs e)
         {
 
         }

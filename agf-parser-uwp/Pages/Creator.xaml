@@ -10,12 +10,33 @@
     <RelativePanel Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
 
         <!--TODO: Add selector to highlight selected state-->
-        <!--TODO: Add ability to click and follow transitions-->
         <!--TODO: Add autocomplete for when typing in transitions-->
+        <!--TODO: Add method for renaming all states and state-references-->
+        <!--TODO: Add pop-up dialog(or flyout) for editing properties of agf-->
 
-        <!--TODO: Add variable editor via StringFormatConverter-->
 
-        <TextBox RelativePanel.LeftOf="ItemsControl_Transitions"
+        <ScrollViewer x:Name="varViewer"
+                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                      RelativePanel.Above="currentText"
+                      RelativePanel.AlignLeftWithPanel="True"
+                      Margin="12">
+
+            <StackPanel Orientation="Vertical" Width="375">
+                <ItemsControl ItemsSource="{x:Bind myVars, Mode=TwoWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Name="fstKey" Text="{Binding Key}" Margin="0,0,0,0"/>
+                                <ItemsControl Name="sndKey" ItemsSource="{Binding Value}" Margin="15,0,0,0" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+
+        <TextBox x:Name="currentText"
+                 RelativePanel.LeftOf="ItemsControl_Transitions"
                  RelativePanel.Above="ItemsControl_States"
                  RelativePanel.AlignLeftWithPanel="True"
                  Margin="10"
@@ -38,36 +59,47 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <StackPanel Orientation="Vertical"
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Vertical"
                                                 Grid.Row="1"
-                                                Margin="10"
+                                                Margin="10,10,0,10"
                                                 Padding="5"
                                                 Background="LightGray"
                                                 Width="270">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Cond: " TextWrapping="Wrap"
-                                               Width="50"/>
-                                        <TextBox Text="{Binding [0]}"
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Cond: " TextWrapping="Wrap"
+                                               Width="50" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding [0]}"
                                                      Width="210"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Trigr: " TextWrapping="Wrap"
-                                               Width="50"/>
-                                        <TextBox Text="{Binding [1]}"
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Trigr: " TextWrapping="Wrap"
+                                               Width="50" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding [1]}"
                                                      Width="210"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Dest: " TextWrapping="Wrap"
-                                               Width="50"/>
-                                        <TextBox Text="{Binding [2]}"
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Dest: " TextWrapping="Wrap"
+                                               Width="50" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding [2]}"
                                                      Width="210"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="CText: " TextWrapping="Wrap"
-                                               Width="50"/>
-                                        <TextBox Text="{Binding [3]}"
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="CText: " TextWrapping="Wrap"
+                                               Width="50" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding [3]}"
                                                      Width="210"/>
+                                        </StackPanel>
                                     </StackPanel>
+                                    <Button Name="runTransition"
+                                            VerticalAlignment="Stretch"
+                                            Click="runTransition_Click"
+                                            Margin="0,10,0,10">
+                                        <Viewbox Name="vbTransition" Stretch="UniformToFill"
+                                                 Width="9">
+                                            <TextBlock Text=">"/>
+                                        </Viewbox>
+                                    </Button>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
@@ -75,7 +107,7 @@
                 </ItemsControl>
 
                 <Button x:Name="addTransition" HorizontalAlignment="Stretch"
-                        Margin="10" Click="addTransition_Click">
+                        Margin="10,10,0,0" Click="addTransition_Click">
                     <TextBlock Text="+" Style="{StaticResource SubtitleTextBlockStyle}"/>
                 </Button>
 
@@ -94,8 +126,10 @@
                 <ItemsControl ItemsSource="{x:Bind stateText, Mode=OneWay}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Height="150" Width="150"
-                                    Margin="10">
+                            <Button Name="stateBtn"
+                                    Height="150" Width="150"
+                                    Margin="10"
+                                    Click="stateBtn_Click">
                                 <TextBlock Text="{Binding}" 
                                          HorizontalAlignment="Center"
                                          VerticalAlignment="Center" />
@@ -110,7 +144,7 @@
                     <TextBlock Text="+"  Style="{StaticResource HeaderTextBlockStyle}"
                                          TextAlignment="Center"
                                          HorizontalAlignment="Center"
-                                         VerticalAlignment="Center" />
+                                         VerticalAlignment="Center"/>
                 </Button>
             </StackPanel>
         </ScrollViewer>
@@ -120,11 +154,18 @@
                     RelativePanel.AlignBottomWithPanel="True"
                     RelativePanel.AlignLeftWithPanel="True"
                     RelativePanel.AlignRightWithPanel="True" DefaultLabelPosition="Right">
-            <AppBarButton Icon="List" Label="Edit Adventure Properties" HorizontalAlignment="Left" />
+            <AppBarButton Name="editProperties" Icon="List"
+                          Label="Edit Adventure Properties"
+                          HorizontalAlignment="Left"
+                          Click="editProperties_Click"/>
             <AppBarSeparator />
-            <AppBarButton Icon="Save" Label="Save" />
+            <AppBarButton Name="saveAdventure" Icon="Save" Label="Save"
+                          Click="saveAdventure_Click"/>
             <CommandBar.SecondaryCommands>
-                <AppBarButton Icon="OpenFile" Label="Edit Existing Adventure"/>
+                <AppBarButton Name="importEdit"
+                              Icon="OpenFile"
+                              Label="Edit Existing Adventure"
+                              Click="importEdit_Click"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </RelativePanel>
