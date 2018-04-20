@@ -23,37 +23,37 @@ namespace agf_parser_uwp
     public sealed partial class Creator : Page
     {
 
-        //Inner Class
-        public class StateSelector : DataTemplateSelector
-        {
-            public DataTemplate DefaultTemplate { get; set; }
-            public DataTemplate SelectedItemTemplate { get; set; }
-
-            protected override DataTemplate SelectTemplateCore(Object item, DependencyObject container)
-            {
-                if (container is GridViewItem c)
-                {
-                    if (c.Tag != null && long.TryParse(c.Tag.ToString(), out var tkn))
-                    {
-                        c.UnregisterPropertyChangedCallback(GridViewItem.IsSelectedProperty, tkn);
-                    }
-
-                    c.Tag = c.RegisterPropertyChangedCallback(GridViewItem.IsSelectedProperty, (s, e) =>
-                    { c.ContentTemplateSelector = null; c.ContentTemplateSelector = this; });
-
-                    if (c.IsSelected)
-                        return SelectedItemTemplate;
-
-                }
-                return DefaultTemplate;
-            }
-        }
-
-        private AdventureGame ag;
-
+        public List<List<string>> binderTest = new List<List<string>>();
+        public List<string> stateText = new List<string>();
+        public string curTxt = "<b> main text my dude</b>";
         public Creator()
         {
+            binderTest.Add(new List<string>());
+            binderTest.Add(new List<string>());
+            binderTest.Add(new List<string>());
+            stateText.Add("state1");
+            stateText.Add("state2");
+
+            string a = "0";
+            foreach (List<string> lst in binderTest)
+            {
+                lst.Add("1frst" + a);
+                lst.Add("2snd" + a);
+                lst.Add("3thrd" + a);
+                lst.Add("4frth" + a);
+                a += "1";
+            }
             this.InitializeComponent();
+        }
+
+        private void addTransition_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void addState_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

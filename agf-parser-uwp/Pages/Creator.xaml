@@ -7,67 +7,124 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-
-    <Page.Resources>
-        <!--DataTemplate for transitions on vertical scrollviewer-->
-        <DataTemplate x:Name="Creator_TransitionTemplateDefault"
-                      x:DataType="local:State">
-            <StackPanel Orientation="Vertical">
-                <ItemsControl ItemsSource="{Binding options}">
-                    <Button Name="nextState" ContextCanceled="" >
-                    </Button>
-                    <!-- make this a togglable click where the text temporarily expands -->
-                    <TextBlock Name="choiceText" Text="{Binding , Mode=TwoWay}">
-                    </TextBlock>
-                    <TextBlock Name="Condition" Text="{Binding }">
-                    </TextBlock>
-                    <TextBlock Name="Triggers" Text="{x:Bind REPLACE}">
-                    </TextBlock>
-                </ItemsControl>
-            </StackPanel>
-        </DataTemplate>
-
-        <!--DataTemplate for states on horizontal scrollviewer-->
-        <DataTemplate x:Name="Creator_StateTemplateDefault"
-                      x:DataType="local:State">
-            <Button Name="State">
-                <TextBlock Name="stateText" Text="{x:Bind text}">
-                </TextBlock>
-            </Button>
-        </DataTemplate>
-    </Page.Resources>
-
-
     <RelativePanel Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
 
+        <!--TODO: Add selector to highlight selected state-->
+        <!--TODO: Add ability to click and follow transitions-->
+        <!--TODO: Add autocomplete for when typing in transitions-->
+
+        <!--TODO: Add variable editor via StringFormatConverter-->
+
+        <TextBox RelativePanel.LeftOf="ItemsControl_Transitions"
+                 RelativePanel.Above="ItemsControl_States"
+                 RelativePanel.AlignLeftWithPanel="True"
+                 Margin="10"
+                 Height="350"
+                 Text="{x:Bind curTxt}">
+        </TextBox>
+
         <!-- make source for this vertical stackpanel the current state's transitions list -->
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <StackPanel Orientation="Horizontal">
-                <ItemsControl x:Name="ItemsControl_Transitions"
-                              ItemTemplate="{StaticResource Creator_TransitionTemplateDefault}"
-                              ItemsSource="{x:Bind ag.states}">
+        <ScrollViewer x:Name="ItemsControl_Transitions"
+                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                      RelativePanel.AlignRightWithPanel="True"
+                      RelativePanel.AlignTopWithPanel="True"
+                      RelativePanel.Above="ItemsControl_States">
+            <StackPanel Orientation="Vertical">
+                <ItemsControl ItemsSource="{x:Bind binderTest, Mode=TwoWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Orientation="Vertical"
+                                                Grid.Row="1"
+                                                Margin="10"
+                                                Padding="5"
+                                                Background="LightGray"
+                                                Width="270">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Cond: " TextWrapping="Wrap"
+                                               Width="50"/>
+                                        <TextBox Text="{Binding [0]}"
+                                                     Width="210"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Trigr: " TextWrapping="Wrap"
+                                               Width="50"/>
+                                        <TextBox Text="{Binding [1]}"
+                                                     Width="210"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Dest: " TextWrapping="Wrap"
+                                               Width="50"/>
+                                        <TextBox Text="{Binding [2]}"
+                                                     Width="210"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="CText: " TextWrapping="Wrap"
+                                               Width="50"/>
+                                        <TextBox Text="{Binding [3]}"
+                                                     Width="210"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
                 </ItemsControl>
+
+                <Button x:Name="addTransition" HorizontalAlignment="Stretch"
+                        Margin="10" Click="addTransition_Click">
+                    <TextBlock Text="+" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                </Button>
+
             </StackPanel>
         </ScrollViewer>
 
-        <!-- make source for this horzontal stackpanel the states list -->
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-            <StackPanel Orientation="Horizontal">
-                <ItemsControl x:Name="ItemsControl_States"
-                              ItemTemplate="{StaticResource Creator_StateTemplateDefault}"
-                              ItemsSource="{x:Bind ag.states}">
+        <ScrollViewer x:Name="ItemsControl_States"
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
+                      HorizontalScrollMode="Auto"
+                      RelativePanel.AlignRightWithPanel="True"
+                      RelativePanel.AlignLeftWithPanel="True"
+                      RelativePanel.Above="Creator_CommandBar">
+
+            <StackPanel Orientation="Horizontal" 
+                        Height="170">
+                <ItemsControl ItemsSource="{x:Bind stateText, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Height="150" Width="150"
+                                    Margin="10">
+                                <TextBlock Text="{Binding}" 
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center" />
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
                 </ItemsControl>
+
+                <Button x:Name="addState"
+                        Height="150" Width="150"
+                        Margin="10" Click="addState_Click">
+                    <TextBlock Text="+"  Style="{StaticResource HeaderTextBlockStyle}"
+                                         TextAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center" />
+                </Button>
             </StackPanel>
         </ScrollViewer>
 
-        <CommandBar RelativePanel.AlignBottomWithPanel="True"
+
+        <CommandBar x:Name="Creator_CommandBar"
+                    RelativePanel.AlignBottomWithPanel="True"
                     RelativePanel.AlignLeftWithPanel="True"
                     RelativePanel.AlignRightWithPanel="True" DefaultLabelPosition="Right">
             <AppBarButton Icon="List" Label="Edit Adventure Properties" HorizontalAlignment="Left" />
             <AppBarSeparator />
             <AppBarButton Icon="Save" Label="Save" />
             <CommandBar.SecondaryCommands>
-                <AppBarButton Icon="OpenFile" Label="Edit Adventure"/>
+                <AppBarButton Icon="OpenFile" Label="Edit Existing Adventure"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </RelativePanel>

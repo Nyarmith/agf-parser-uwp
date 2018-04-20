@@ -30,7 +30,7 @@
             <NavigationViewItem Icon="Globe" Content="Browse Online Adventures" Tag="BrowseNet" />
             <NavigationViewItem Icon="BrowsePhotos" Content="Browse Local Adventures" Tag="BrowseLocal" />
             <NavigationViewItemSeparator/>
-            <!--<NavigationViewItem Icon="Edit" Content="Adventure Creator" Tag="Creator" />-->
+            <NavigationViewItem Icon="Edit" Content="Adventure Creator" Tag="Creator" />
         </NavigationView.MenuItems>
 
         <NavigationView.HeaderTemplate>
