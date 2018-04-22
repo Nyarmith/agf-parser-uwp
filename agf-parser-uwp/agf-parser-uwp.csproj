@@ -123,6 +123,8 @@
     <Compile Include="Parser\ActiveGame.cs" />
     <Compile Include="Parser\AdventureGame.cs" />
     <Compile Include="Parser\AgfInterpreter.cs" />
+    <Compile Include="Parser\ObservableAdventure.cs" />
+    <Compile Include="Parser\ObservableDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pages\ResumePage.xaml.cs">
       <DependentUpon>ResumePage.xaml</DependentUpon>

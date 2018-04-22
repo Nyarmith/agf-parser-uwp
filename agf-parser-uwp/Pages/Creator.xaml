@@ -9,11 +9,19 @@
 
     <RelativePanel Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
 
-        <!--TODO: Add selector to highlight selected state-->
         <!--TODO: Add autocomplete for when typing in transitions-->
         <!--TODO: Add method for renaming all states and state-references-->
         <!--TODO: Add pop-up dialog(or flyout) for editing properties of agf-->
 
+        <StackPanel Orientation="Horizontal"
+                    BorderBrush="PaleVioletRed"
+                    BorderThickness="2" Padding="2"
+                    Margin="10,0,0,0">
+            <TextBlock Text="CurrentState |" Margin="0,0,3,0" FontSize="14" VerticalAlignment="Center"/>
+            <TextBox Name="currentStateBox" Text="{x:Bind game.position, Mode=OneWay}"
+                     FontStyle="Italic" Foreground="DarkSlateGray"
+                     TextChanged="currentStateBox_TextChanged"/>
+        </StackPanel>
 
         <ScrollViewer x:Name="varViewer"
                       HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
@@ -22,12 +30,16 @@
                       Margin="12">
 
             <StackPanel Orientation="Vertical" Width="375">
-                <ItemsControl ItemsSource="{x:Bind myVars, Mode=TwoWay}">
+                <ItemsControl ItemsSource="{x:Bind varsObservable, Mode=TwoWay}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
-                                <TextBlock Name="fstKey" Text="{Binding Key}" Margin="0,0,0,0"/>
-                                <ItemsControl Name="sndKey" ItemsSource="{Binding Value}" Margin="15,0,0,0" />
+                                <TextBlock Name="fstKey"
+                                           Text="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Margin="0,0,0,0"/>
+                                <ItemsControl Name="sndKey"
+                                              ItemsSource="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              Margin="15,0,0,0" />
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -41,7 +53,7 @@
                  RelativePanel.AlignLeftWithPanel="True"
                  Margin="10"
                  Height="350"
-                 Text="{x:Bind curTxt}">
+                 Text="{x:Bind currentState.text, Mode=TwoWay}">
         </TextBox>
 
         <!-- make source for this vertical stackpanel the current state's transitions list -->
@@ -51,7 +63,7 @@
                       RelativePanel.AlignTopWithPanel="True"
                       RelativePanel.Above="ItemsControl_States">
             <StackPanel Orientation="Vertical">
-                <ItemsControl ItemsSource="{x:Bind binderTest, Mode=TwoWay}">
+                <ItemsControl ItemsSource="{x:Bind choicesObservable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -69,26 +81,26 @@
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Cond: " TextWrapping="Wrap"
                                                Width="50" VerticalAlignment="Center"/>
-                                            <TextBox Text="{Binding [0]}"
-                                                     Width="210"/>
+                                            <TextBox Text="{Binding [0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="210" TextChanged="TextBox_TextChanged"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Trigr: " TextWrapping="Wrap"
                                                Width="50" VerticalAlignment="Center"/>
-                                            <TextBox Text="{Binding [1]}"
-                                                     Width="210"/>
+                                            <TextBox Text="{Binding [1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="210" TextChanged="TextBox_TextChanged"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Dest: " TextWrapping="Wrap"
                                                Width="50" VerticalAlignment="Center"/>
-                                            <TextBox Text="{Binding [2]}"
-                                                     Width="210"/>
+                                            <TextBox Text="{Binding [2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="210" TextChanged="TextBox_TextChanged"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="CText: " TextWrapping="Wrap"
                                                Width="50" VerticalAlignment="Center"/>
-                                            <TextBox Text="{Binding [3]}"
-                                                     Width="210"/>
+                                            <TextBox Text="{Binding [3], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="210" TextChanged="TextBox_TextChanged"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <Button Name="runTransition"
@@ -123,7 +135,12 @@
 
             <StackPanel Orientation="Horizontal" 
                         Height="170">
-                <ItemsControl ItemsSource="{x:Bind stateText, Mode=OneWay}">
+                <ItemsControl ItemsSource="{x:Bind statesObservable, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button Name="stateBtn"
@@ -157,7 +174,35 @@
             <AppBarButton Name="editProperties" Icon="List"
                           Label="Edit Adventure Properties"
                           HorizontalAlignment="Left"
-                          Click="editProperties_Click"/>
+                          Click="editProperties_Click"
+                          AllowFocusOnInteraction="True">
+                <AppBarButton.Flyout>
+                <Flyout>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Title:" />
+                            <TextBox Text="{x:Bind game.data.title, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Author:"/>
+                            <TextBox Text="{x:Bind game.data.author, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <TextBlock Text="Winstates:"/>
+                        <ScrollViewer>
+                            <ItemsControl ItemsSource="{x:Bind game.data.win_states, Mode=TwoWay}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                            <TextBox Text="{Binding}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                            <Button HorizontalAlignment="Stretch">
+                                <TextBlock Text="+"></TextBlock></Button>
+                    </StackPanel>
+                </Flyout>
+            </AppBarButton.Flyout>
+            </AppBarButton>
             <AppBarSeparator />
             <AppBarButton Name="saveAdventure" Icon="Save" Label="Save"
                           Click="saveAdventure_Click"/>

@@ -11,8 +11,8 @@ namespace agf_parser_unit_tests
         public void SaveLoadTest()
         {
             string basic_game_text = @"{
-  ""title"":""basic addition"",
-  ""author"":""sergey"",
+  ""title"":""Your Aventure!"",
+  ""author"":""defaultAuthor"",
   ""gamevars"" : { ""inventory"":{ ""baseball"":true, ""bat"":true}, ""user"":{ } },
   ""win_states"" : [""right_result""],
   ""start_state"" : ""question"",

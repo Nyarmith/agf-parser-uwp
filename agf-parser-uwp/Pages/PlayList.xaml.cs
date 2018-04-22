@@ -134,7 +134,7 @@ namespace agf_parser_uwp
         }
 
         //play the linked game
-        private async void playHandler(object sender, RoutedEventArgs e)
+        private void playHandler(object sender, RoutedEventArgs e)
         {
             var obj = e.OriginalSource;
 

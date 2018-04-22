@@ -548,6 +548,11 @@ namespace AgfLang
             states = usermem;
         }
 
+        public Interpreter(Dictionary<String, Dictionary<String,int>> usermem)
+        {
+            states = usermem;
+        }
+
         //evaluate input to modify states
         public void exec(string input)
         {
@@ -715,6 +720,12 @@ namespace AgfLang
         {
             mem_copy = internal_mem;
             interpreter = new Interpreter(ref internal_mem);
+        }
+
+        public AgfInterpreter(Dictionary<string, Dictionary<string, int>> internal_mem)
+        {
+            mem_copy = internal_mem;
+            interpreter = new Interpreter(internal_mem);
         }
 
         public string eval(string text)
