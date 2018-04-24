@@ -79,18 +79,6 @@
                                                 Background="LightGray"
                                                 Width="270">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="Cond: " TextWrapping="Wrap"
-                                               Width="50" VerticalAlignment="Center"/>
-                                            <TextBox Text="{Binding [0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     Width="210" TextChanged="TextBox_TextChanged"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="Trigr: " TextWrapping="Wrap"
-                                               Width="50" VerticalAlignment="Center"/>
-                                            <TextBox Text="{Binding [1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     Width="210" TextChanged="TextBox_TextChanged"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Dest: " TextWrapping="Wrap"
                                                Width="50" VerticalAlignment="Center"/>
                                             <TextBox Text="{Binding [2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -100,6 +88,18 @@
                                             <TextBlock Text="CText: " TextWrapping="Wrap"
                                                Width="50" VerticalAlignment="Center"/>
                                             <TextBox Text="{Binding [3], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="210" TextChanged="TextBox_TextChanged"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Cond: " TextWrapping="Wrap"
+                                               Width="50" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding [0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="210" TextChanged="TextBox_TextChanged"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Trigr: " TextWrapping="Wrap"
+                                               Width="50" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding [1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      Width="210" TextChanged="TextBox_TextChanged"/>
                                         </StackPanel>
                                     </StackPanel>

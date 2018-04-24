@@ -176,7 +176,7 @@ namespace agf_parser_uwp
             dynamic statebtn = e.OriginalSource;
             string nextState = statebtn.Content.Text;
 
-            game.position = nextState;
+            game.forceState(nextState);
             currentState = game.data.states[game.position];
             refresh();
         }
@@ -262,6 +262,8 @@ namespace agf_parser_uwp
             updateProperty(nameof(choicesObservable));
             updateProperty(nameof(statesObservable));
             updateProperty(nameof(currentState.options));
+            updateProperty(nameof(currentState.text));
+            updateProperty(nameof(currentState));
             updateProperty(nameof(game.data.states));
             updateProperty(nameof(game.data));
             updateProperty(nameof(game.position));

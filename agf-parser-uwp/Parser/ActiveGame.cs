@@ -58,6 +58,14 @@ namespace agf_parser_uwp
             processText(cur);
         }
 
+        public void forceState(string stateName)
+        {
+            position = stateName;
+            State cur = data.states[position];
+            pruneChoices(cur);
+            processText(cur);
+        }
+
         //==== Interface ====
         public List<string> getChoices()
         {

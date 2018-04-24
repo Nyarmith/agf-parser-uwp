@@ -177,6 +177,10 @@ namespace AgfLang
                 {
                     return new Token(Tokens.INT, "1");
                 }
+                if (fst == "false" || fst == "False")
+                {
+                    return new Token(Tokens.INT, "0");
+                }
                 error();
             }
             advance();
