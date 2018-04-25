@@ -97,13 +97,20 @@ namespace agf_parser_uwp
                 defaultKey += "0";
             }
 
+            makeDefaultState(defaultKey);
+
+        }
+
+        private void makeDefaultState(string stateName)
+        {
             State defaultState = new State();
             defaultState.text = "new state placeholder text";
             defaultState.options = new List<List<string>>();
             defaultState.options.Add(new List<string>() { "", "", "destState", "choice dialog" } );
-            game.data.states.Add(defaultKey, defaultState);
+            game.data.states.Add(stateName, defaultState);
             refresh();
         }
+
 
         private void editProperties_Click(object sender, RoutedEventArgs e)
         {
@@ -171,13 +178,42 @@ namespace agf_parser_uwp
             refresh();
         }
 
+        //right click on state to delete ( or other detailed mouse actions )
+        private void stateBtn_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            if (e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
+            {
+                var p = e.GetCurrentPoint((UIElement)sender);
+                if (p.Properties.IsRightButtonPressed)
+                {
+                    dynamic statebtn = sender;
+                    string state_to_del = statebtn.Content.Text;
+                    delState(state_to_del);
+                }
+            }
+            refresh();
+        }
+
         private void stateBtn_Click(object sender, RoutedEventArgs e)
         {
-            dynamic statebtn = e.OriginalSource;
+            dynamic statebtn = sender;
             string nextState = statebtn.Content.Text;
 
             game.forceState(nextState);
             currentState = game.data.states[game.position];
+            refresh();
+        }
+
+        private void delState(string stateName)
+        {
+            //remove from our statesObservable, then our state dict
+            statesObservable.Remove(stateName);
+            game.data.states.Remove(stateName);
+
+            //do I have any states?
+            //if (game.data.states.Count == 0)
+            //makeDefaultState("newState");
+
             refresh();
         }
 
@@ -290,5 +326,6 @@ namespace agf_parser_uwp
                 currentState.options.Add(new List<string>{ e[0], e[1], e[2], e[3] });
             }
         }
+
     }
 }

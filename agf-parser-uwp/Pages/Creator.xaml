@@ -53,6 +53,7 @@
                  RelativePanel.AlignLeftWithPanel="True"
                  Margin="10"
                  Height="350"
+                 TextWrapping="Wrap"
                  Text="{x:Bind currentState.text, Mode=TwoWay}">
         </TextBox>
 
@@ -146,6 +147,7 @@
                             <Button Name="stateBtn"
                                     Height="150" Width="150"
                                     Margin="10"
+                                    PointerPressed="stateBtn_PointerPressed"
                                     Click="stateBtn_Click">
                                 <TextBlock Text="{Binding}" 
                                          HorizontalAlignment="Center"
