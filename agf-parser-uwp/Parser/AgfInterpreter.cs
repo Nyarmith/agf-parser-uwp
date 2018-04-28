@@ -552,6 +552,7 @@ namespace AgfLang
             states = usermem;
         }
 
+        [JsonConstructor]
         public Interpreter(Dictionary<String, Dictionary<String,int>> usermem)
         {
             states = usermem;
@@ -726,6 +727,7 @@ namespace AgfLang
             interpreter = new Interpreter(ref internal_mem);
         }
 
+        [JsonConstructor]
         public AgfInterpreter(Dictionary<string, Dictionary<string, int>> internal_mem)
         {
             mem_copy = internal_mem;

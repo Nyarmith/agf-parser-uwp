@@ -35,7 +35,7 @@ namespace agf_parser_uwp
         public const string DEF_GAME_TXT = @"{
   ""title"":""basic addition"",
   ""author"":""sergey"",
-  ""gamevars"" : { ""inventory"":{ ""baseball"":true, ""bat"":true}, ""user"":{ } },
+  ""gamevars"" : { ""inventory"":{ }, ""user"":{ } },
   ""win_states"" : [""right_result""],
   ""start_state"" : ""question"",
   ""states"" : {
@@ -194,12 +194,26 @@ namespace agf_parser_uwp
             refresh();
         }
 
-        private void stateBtn_Click(object sender, RoutedEventArgs e)
+        private async void stateBtn_Click(object sender, RoutedEventArgs e)
         {
             dynamic statebtn = sender;
             string nextState = statebtn.Content.Text;
 
-            game.forceState(nextState);
+            try
+            {
+                game.forceState(nextState);
+            }
+            catch
+            {
+                ContentDialog stateTransitionErrorMsg = new ContentDialog
+                {
+                    Title = "Transition Errors",
+                    Content = "Error in conditions of current state's transitions",
+                    CloseButtonText = "Ok"
+                };
+
+                await stateTransitionErrorMsg.ShowAsync();
+            }
             currentState = game.data.states[game.position];
             refresh();
         }
@@ -217,14 +231,29 @@ namespace agf_parser_uwp
             refresh();
         }
 
-        private void runTransition_Click(object sender, RoutedEventArgs e)
+        private async void runTransition_Click(object sender, RoutedEventArgs e)
         {
             dynamic transition = e.OriginalSource;
             ObservableCollection<string> p = transition.DataContext as ObservableCollection<string>;
             //now we can search our transitions
             int i = choicesObservable.IndexOf(p); //List.IndexOf(currentState.options, p);
 
-            game.choose(i);
+            try
+            {
+                game.choose(i);
+            }
+            catch
+            {
+                ContentDialog chooseErrorMsg = new ContentDialog
+                {
+                    Title = "Transition Error",
+                    Content = "Error in trigger-expression of current transitions",
+                    CloseButtonText = "Ok"
+                };
+
+                await chooseErrorMsg.ShowAsync();
+                return;
+            }
             currentState = game.data.states[game.position];
             refresh();
         }
@@ -251,10 +280,16 @@ namespace agf_parser_uwp
             TextBox tb = sender as TextBox;
             string newStr = tb.Text;
 
+
             if (newStr == "" || newStr == game.position)
                 return; //ignore this case
 
             game.data.states.Remove(game.position);
+
+            while (game.data.states.ContainsKey(newStr))
+            {
+                newStr += "0";
+            }
             game.data.states.Add(newStr, currentState);
 
             foreach ( KeyValuePair<string,State> entry in game.data.states)

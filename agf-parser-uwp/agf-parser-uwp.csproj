@@ -144,11 +144,6 @@
     <None Include="agf-parser-uwp_StoreKey.pfx" />
     <None Include="agf-parser-uwp_TemporaryKey.pfx" />
     <Content Include="Assets\Adventures\basic_adv.json" />
-    <Content Include="Assets\Adventures\fodder1.json" />
-    <Content Include="Assets\Adventures\fodder2.json" />
-    <Content Include="Assets\Adventures\fodder4.json" />
-    <Content Include="Assets\Adventures\fodder3.json" />
-    <Content Include="Assets\Adventures\UIIpsum.json" />
     <Content Include="Assets\BadgeLogo.scale-100.png" />
     <Content Include="Assets\BadgeLogo.scale-125.png" />
     <Content Include="Assets\BadgeLogo.scale-150.png" />
@@ -202,6 +197,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Adventures\basic_deduction.json" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
